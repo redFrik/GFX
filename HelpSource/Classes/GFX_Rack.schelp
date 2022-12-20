@@ -1,0 +1,48 @@
+class:: GFX_Rack
+summary:: effectsrack
+categories:: Green
+related:: Classes/GFX_RackGUI, Classes/GFX_Module, Classes/GFX_ModuleGUI
+
+
+DESCRIPTION::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+METHOD:: newPaused
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: initGFX_Rack, prBuildDef
+
+METHOD:: group
+
+METHOD:: efxs
+
+METHOD:: outbus
+
+METHOD:: vol
+
+METHOD:: diff
+
+METHOD:: which
+
+METHOD:: bus
+
+METHOD:: free
+
+METHOD:: lags
+
+METHOD:: pause
+
+METHOD:: gui
+
+
+EXAMPLES::
+
+CODE::
+test
+::

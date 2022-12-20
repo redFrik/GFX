@@ -1,0 +1,23 @@
+class:: GFX_RackGUI
+summary:: GUI for effects rack
+categories:: Green
+related:: Classes/GFX_Rack, Classes/GFX_Module, Classes/GFX_ModuleGUI
+
+
+DESCRIPTION::
+
+CLASSMETHODS::
+
+METHOD:: numModulesBeforeScroll
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: prInit
+
+
+EXAMPLES::
+
+CODE::
+test
+::

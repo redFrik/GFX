@@ -1,0 +1,68 @@
+class:: AbstractGFX
+summary:: abstract class for effect modules and effects rack
+categories:: Green
+related:: Classes/AbstractGFXGUI
+
+
+DESCRIPTION::
+
+NOTE::
+This is an abstract class. Do not instantiate - use the subclasses
+::
+
+CLASSTREE:: AbstractGFX
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: initAbstractGFX, prBuildDef, prAddMethod
+
+METHOD:: specs
+
+METHOD:: cvs
+
+METHOD:: lookup
+
+METHOD:: def
+
+METHOD:: synth
+
+METHOD:: numChannels
+
+METHOD:: bus
+
+METHOD:: free
+
+METHOD:: get
+
+METHOD:: set
+
+METHOD:: softSet
+
+METHOD:: active
+
+METHOD:: mixKeys
+
+METHOD:: specForKey
+
+METHOD:: defaults
+
+METHOD:: values
+
+METHOD:: bypass
+
+METHOD:: restoreDefaults
+
+METHOD:: gui
+
+
+EXAMPLES::
+
+CODE::
+test
+::

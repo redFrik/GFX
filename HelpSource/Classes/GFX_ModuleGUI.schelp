@@ -1,0 +1,19 @@
+class:: GFX_ModuleGUI
+summary:: GUI for effect module
+categories:: Green
+related:: Classes/GFX_Module, Classes/GFX_Rack, Classes/GFX_RackGUI
+
+
+DESCRIPTION::
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: prInit, prDkey
+
+
+EXAMPLES::
+
+CODE::
+test
+::

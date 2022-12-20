@@ -1,0 +1,9 @@
+TITLE:: GFX_Overview
+SUMMARY:: GFX system overview
+CATEGORIES:: Green
+
+DESCRIPTION::
+
+Green effects module system with optional GUI.
+
+Based on redModule in the [redSys](https://github.com/redFrik/redSys) quark.

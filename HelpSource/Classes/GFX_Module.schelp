@@ -1,0 +1,49 @@
+class:: GFX_Module
+summary:: class for effects
+categories:: Green
+related:: Classes/GFX_ModuleGUI, Classes/GFX_Rack, Classes/GFX_RackGUI
+
+
+DESCRIPTION::
+
+NOTE::
+it is recommended to instantiate the subclasses directly...
+CODE::
+GFX_Module.subclasses;
+::
+::
+
+CLASSTREE:: GFX_Module
+
+
+CLASSMETHODS::
+
+METHOD:: new
+
+METHOD:: newPaused
+
+METHOD:: newModule
+
+METHOD:: ar
+
+METHOD:: specs
+
+
+INSTANCEMETHODS::
+
+PRIVATE:: initGFX_Module, prBuildDef
+
+METHOD:: lags
+
+METHOD:: prefix
+
+METHOD:: free
+
+METHOD:: gui
+
+
+EXAMPLES::
+
+CODE::
+test
+::
