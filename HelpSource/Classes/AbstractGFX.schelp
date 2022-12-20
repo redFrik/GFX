@@ -10,8 +10,6 @@ NOTE::
 This is an abstract class. Do not instantiate - use the subclasses
 ::
 
-CLASSTREE:: AbstractGFX
-
 
 CLASSMETHODS::
 

@@ -23,10 +23,6 @@ ARGUMENT:: position
 
 ARGUMENT:: version
 
-ARGUMENT:: skin
-
-If not specified then CODE::GUI.skins.guiCV:: will be used.
-
 
 INSTANCEMETHODS::
 

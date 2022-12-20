@@ -6,11 +6,12 @@ AbstractGFXGUI : SCViewHolder {
 
 	var <efx;  //a GFX_Module or a GFX_Rack
 
-	*new {|efx, position, version= 0, skin|
-		^super.new.initAbstractGFXGUI(efx, position, version, skin ? GUI.skins.guiCV)
+	*new {|efx, position, version= 0|
+		^super.new.initAbstractGFXGUI(efx, position, version)
 	}
 
-	initAbstractGFXGUI {|argEfx, position, version, skin|
+	initAbstractGFXGUI {|argEfx, position, version|
+		var skin= GUI.skins.guiCV;
 		efx= argEfx;
 		position= position ?? {Point(300, 100)};
 		this.prInit(version, skin);

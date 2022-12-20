@@ -31,19 +31,19 @@ GFX_RackGUI : AbstractGFXGUI {
 		//--header
 		hl= HLayout();
 		header= View().layout_(VLayout(hl).margins_(0));
-		hl.add(GUICV.staticText(skin).string_("vol:").resizeToHint);
-		hl.add(GUICV.numberBox(skin).action_({|v| efx.vol_(v.value)}));
-		hl.add(GUICV.staticText(skin).string_("lags:").resizeToHint);
-		hl.add(GUICV.numberBox(skin).action_({|v| efx.lags_(v.value)}).clipLo_(0));
+		hl.add(GUICV.staticText.string_("vol:").resizeToHint);
+		hl.add(GUICV.numberBox.action_({|v| efx.vol_(v.value)}));
+		hl.add(GUICV.staticText.string_("lags:").resizeToHint);
+		hl.add(GUICV.numberBox.action_({|v| efx.lags_(v.value)}).clipLo_(0));
 		hl.add(nil);
 		hl.add(
-			macroMenu= GUICV.popUpMenu(skin)
+			macroMenu= GUICV.popUpMenu
 			.action_({|v| macros[v.value].value.value})
 			.canFocus_(true)
 			.items_(macros.collect{|assoc| assoc.key})
 		);
 		hl.add(
-			GUICV.button(skin)
+			GUICV.button
 			.action_({macroMenu.doAction})
 			.focus(true)  //initially give button focus as it is harmless
 			.states_([["<"]])
@@ -59,7 +59,7 @@ GFX_RackGUI : AbstractGFXGUI {
 		);
 
 		efx.efxs.do{|x, i|
-			var mod= GFX_ModuleGUI(x, version: version, skin: skin);
+			var mod= GFX_ModuleGUI(x, version: version);
 			var modHeight= mod.bounds.height;
 			mod.fixedHeight_(modHeight);
 			if(mod.sizeHint.width>viewWidth, {viewWidth= mod.sizeHint.width});
