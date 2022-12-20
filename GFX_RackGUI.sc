@@ -3,7 +3,7 @@
 GFX_RackGUI : AbstractGFXGUI {
 	classvar <>numModulesBeforeScroll= 8;
 
-	prInit {|skin, version|
+	prInit {|version, skin|
 		var hl, header, canvas;
 		var macros, macroMenu;
 		var viewWidth= 0, viewHeight;
@@ -31,42 +31,23 @@ GFX_RackGUI : AbstractGFXGUI {
 		//--header
 		hl= HLayout();
 		header= View().layout_(VLayout(hl).margins_(0));
-		hl.add(StaticText().string_("vol:"));
-		hl.add(
-			NumberBox()
-			.action_({|v| efx.vol_(v.value)})
-			.maxWidth_(skin.knobWidth)
-			.normalColor_(skin.fontColor)
-			.typingColor_(skin.highlight)
-		);
-		hl.add(StaticText().string_("lags:"));
-		hl.add(
-			NumberBox()
-			.action_({|v| efx.lags_(v.value)})
-			.clipLo_(0)
-			.maxWidth_(skin.knobWidth)
-			.normalColor_(skin.fontColor)
-			.typingColor_(skin.highlight)
-		);
+		hl.add(GUICV.staticText(skin).string_("vol:").resizeToHint);
+		hl.add(GUICV.numberBox(skin).action_({|v| efx.vol_(v.value)}));
+		hl.add(GUICV.staticText(skin).string_("lags:").resizeToHint);
+		hl.add(GUICV.numberBox(skin).action_({|v| efx.lags_(v.value)}).clipLo_(0));
 		hl.add(nil);
 		hl.add(
-			macroMenu= PopUpMenu()
+			macroMenu= GUICV.popUpMenu(skin)
 			.action_({|v| macros[v.value].value.value})
 			.canFocus_(true)
 			.items_(macros.collect{|assoc| assoc.key})
 		);
 		hl.add(
-			Button()
+			GUICV.button(skin)
 			.action_({macroMenu.doAction})
 			.focus(true)  //initially give button focus as it is harmless
-			.maxWidth_(skin.knobWidth)
 			.states_([["<"]])
 		);
-		header.children.do{|v|
-			v.fixedHeight_(skin.buttonHeight);
-			v.font_(Font(*skin.fontSpecs));
-			v.palette= skin.palette;
-		};
 		header.layout.add(
 			View().background_(skin.fontColor).fixedHeight_(1)  //thin separator
 		);
@@ -78,7 +59,7 @@ GFX_RackGUI : AbstractGFXGUI {
 		);
 
 		efx.efxs.do{|x, i|
-			var mod= GFX_ModuleGUI(x, version: version);
+			var mod= GFX_ModuleGUI(x, version: version, skin: skin);
 			var modHeight= mod.bounds.height;
 			mod.fixedHeight_(modHeight);
 			if(mod.sizeHint.width>viewWidth, {viewWidth= mod.sizeHint.width});

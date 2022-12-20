@@ -2,17 +2,16 @@
 
 GFX_ModuleGUI : AbstractGFXGUI {
 
-	prInit {|skin, version|
+	prInit {|version, skin|
 		var label, controller;
 		var hl= HLayout().margins_(skin.margin.asArray).spacing_(skin.spacing);
 
 		switch(version,
 			1, {this.prV1(hl, skin)},
-			{this.prV0(hl)}
+			{this.prV0(hl, skin)}
 		);
 
-		label= StaticText().string_(efx.prefix.join(Char.nl))
-		.font_(Font(skin.fontSpecs[0], skin.fontSpecs[1]));
+		label= GUICV.staticText(skin).string_(efx.prefix.join(Char.nl));
 		controller= SimpleController(efx.cvs[\pause]).put(\value, {|ref|
 			label.stringColor_(if(ref.value, {skin.foreground}, {skin.fontColor}));
 		});
@@ -34,7 +33,7 @@ GFX_ModuleGUI : AbstractGFXGUI {
 		});
 	}
 
-	prV0 {|hl|
+	prV0 {|hl, skin|
 		efx.specs.do{|assoc|
 			var ref= efx.cvs[assoc.key];
 			var spec= assoc.value;
@@ -54,7 +53,7 @@ GFX_ModuleGUI : AbstractGFXGUI {
 				this.prDkey(knob);
 				vl.add(knob, align: \center);
 				vl.add(GUICVNumberBox(ref, spec), align: \center);
-				vl.add(GUICVStaticText(assoc.key), align: \center);
+				vl.add(GUICV.staticText(skin).string_(assoc.key), align: \center);
 				hl.add(vl);
 			});
 		};

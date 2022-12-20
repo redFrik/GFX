@@ -1,7 +1,7 @@
 class:: AbstractGFXGUI
 summary:: abstract class for effect modules and effects rack GUI
 categories:: Green
-related:: Classes/AbstractGFX
+related:: Classes/AbstractGFX, Classes/AbstractGUICV
 
 
 DESCRIPTION::
@@ -22,6 +22,10 @@ ARGUMENT:: efx
 ARGUMENT:: position
 
 ARGUMENT:: version
+
+ARGUMENT:: skin
+
+If not specified then CODE::GUI.skins.guiCV:: will be used.
 
 
 INSTANCEMETHODS::
