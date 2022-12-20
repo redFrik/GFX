@@ -2,10 +2,39 @@
 
 GFX_ModuleGUI : AbstractGFXGUI {
 
-	prInit {|skin|
+	prInit {|skin, version|
 		var label, controller;
 		var hl= HLayout().margins_(skin.margin.asArray).spacing_(skin.spacing);
 
+		switch(version,
+			1, {this.prV1(hl, skin)},
+			{this.prV0(hl)}
+		);
+
+		label= StaticText().string_(efx.prefix.join(Char.nl))
+		.font_(Font(skin.fontSpecs[0], skin.fontSpecs[1]));
+		controller= SimpleController(efx.cvs[\pause]).put(\value, {|ref|
+			label.stringColor_(if(ref.value, {skin.foreground}, {skin.fontColor}));
+		});
+		efx.cvs[\pause].changed(\value);
+		hl.add(label, 1, \right);
+
+		view= View().layout_(hl);
+		view.name_(efx.def.name);
+
+		view.onClose_({controller.remove});
+	}
+
+	prDkey {|guiCV|
+		guiCV.keyDownAction_({|v ...args|
+			v.defaultKeyDownAction(*args);
+			if(args[0]==$d, {
+				guiCV.value_(guiCV.spec.default)
+			});
+		});
+	}
+
+	prV0 {|hl|
 		efx.specs.do{|assoc|
 			var ref= efx.cvs[assoc.key];
 			var spec= assoc.value;
@@ -29,27 +58,27 @@ GFX_ModuleGUI : AbstractGFXGUI {
 				hl.add(vl);
 			});
 		};
-
-		label= StaticText().string_(efx.prefix.join(Char.nl))
-		.font_(Font(skin.fontSpecs[0], skin.fontSpecs[1]));
-		controller= SimpleController(efx.cvs[\pause]).put(\value, {|ref|
-			label.stringColor_(if(ref.value, {skin.foreground}, {skin.fontColor}));
-		});
-		efx.cvs[\pause].changed(\value);
-		hl.add(label, 1, \right);
-
-		view= View().layout_(hl);
-		view.name_(efx.def.name);
-
-		view.onClose_({controller.remove});
 	}
 
-	prDkey {|guiCV|
-		guiCV.keyDownAction_({|v ...args|
-			v.defaultKeyDownAction(*args);
-			if(args[0]==$d, {
-				guiCV.value_(guiCV.spec.default)
-			});
-		});
+	prV1 {|hl, skin|
+		var vl= VLayout().spacing_(skin.spacing);
+
+		efx.specs.do{|assoc|
+			var ref= efx.cvs[assoc.key];
+			var spec= assoc.value;
+			var v, n;
+
+			v= GUICVSliderLabel(ref, spec, (string: assoc.key));
+			v.orientation_(\horizontal);
+			v.asView.minWidth_(skin.sliderHeight).fixedHeight_(skin.buttonHeight);
+			v.minWidth_(skin.sliderHeight).fixedHeight_(skin.buttonHeight);
+			this.prDkey(v);
+
+			n= GUICVNumberBox(ref, spec);
+			n.fixedSize_(Size(skin.knobWidth, skin.buttonHeight));
+
+			vl.add(HLayout(v, n));
+		};
+		hl.add(vl);
 	}
 }

@@ -90,8 +90,8 @@ GFX_Rack : AbstractGFX {
 		};
 	}
 
-	gui {|position|
-		^GFX_RackGUI(this, position)
+	gui {|position, version= 0|
+		^GFX_RackGUI(this, position, version)
 	}
 
 	//--synth

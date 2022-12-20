@@ -3,10 +3,9 @@
 GFX_RackGUI : AbstractGFXGUI {
 	classvar <>numModulesBeforeScroll= 8;
 
-	prInit {|skin|
+	prInit {|skin, version|
 		var hl, header, canvas;
 		var macros, macroMenu;
-		var modHeight= skin.sliderHeight+(skin.margin.y*2);
 		var viewWidth= 0, viewHeight;
 
 		macros= [
@@ -79,7 +78,8 @@ GFX_RackGUI : AbstractGFXGUI {
 		);
 
 		efx.efxs.do{|x, i|
-			var mod= GFX_ModuleGUI(x);
+			var mod= GFX_ModuleGUI(x, version: version);
+			var modHeight= mod.bounds.height;
 			mod.fixedHeight_(modHeight);
 			if(mod.sizeHint.width>viewWidth, {viewWidth= mod.sizeHint.width});
 			if(i<numModulesBeforeScroll, {viewHeight= viewHeight+modHeight+skin.spacing});
@@ -91,13 +91,15 @@ GFX_RackGUI : AbstractGFXGUI {
 			VLayout(
 				header,
 				ScrollView().canvas_(canvas).hasBorder_(false).canFocus_(false)
-			).margins_(skin.margin.asArray).spacing_(skin.spacing);
-		).resizeTo(
+			).margins_(skin.margin.asArray).spacing_(skin.spacing)
+		)
+		.name_(this.class.name++$_++efx.numChannels)
+		.resizeTo(
 			viewWidth+(skin.margin.x*2)+(skin.spacing*2),
 			viewHeight+(skin.margin.y*2)
-		);
-		canvas.keyDownAction_({true});  //block arrow keys scrolling
+		)
+		.minWidth_(150);
 
-		view.name_(this.class.name++$_++efx.numChannels);
+		canvas.keyDownAction_({true});  //block arrow keys scrolling
 	}
 }

@@ -135,8 +135,8 @@ GFX_Module : AbstractGFX {
 		});
 	}
 
-	gui {|position|
-		^GFX_ModuleGUI(this, position)
+	gui {|position, version= 0|
+		^GFX_ModuleGUI(this, position, version)
 	}
 
 	//--synth
