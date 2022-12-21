@@ -23,15 +23,6 @@ GFX_ModuleGUI : AbstractGFXGUI {
 		.onClose_({controller.remove});
 	}
 
-	prDkey {|guiCV|  //key D for spec default
-		guiCV.keyDownAction_({|v ...args|
-			v.defaultKeyDownAction(*args);
-			if(args[0]==$d, {
-				guiCV.value_(guiCV.spec.default)
-			});
-		});
-	}
-
 	prV0 {|hl, skin|
 		efx.specs.do{|assoc|
 			var ref= efx.cvs[assoc.key];
@@ -41,7 +32,6 @@ GFX_ModuleGUI : AbstractGFXGUI {
 			//--mix slider
 			if(efx.mixKeys.includes(assoc.key), {
 				slider= GUICVSliderLabel(nil, nil, ref, spec, (string: assoc.key));
-				this.prDkey(slider);
 				hl.add(slider);
 
 			}, {
@@ -50,7 +40,6 @@ GFX_ModuleGUI : AbstractGFXGUI {
 				vl= VLayout().spacing_(1);
 
 				knob= GUICVKnob(nil, nil, ref, spec, update:false);
-				this.prDkey(knob);
 
 				number= GUICVNumberBox(nil, nil, ref, spec)
 				.fixedSize_(Size(skin.knobWidth, skin.buttonHeight));
@@ -77,7 +66,6 @@ GFX_ModuleGUI : AbstractGFXGUI {
 			.fixedHeight_(skin.buttonHeight)
 			.minWidth_(skin.knobWidth*2)
 			.orientation_(\horizontal);
-			this.prDkey(slider);
 
 			number= GUICVNumberBox(nil, nil, ref, spec)
 			.fixedHeight_(skin.buttonHeight)

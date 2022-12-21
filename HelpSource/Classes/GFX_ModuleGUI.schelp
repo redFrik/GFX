@@ -9,7 +9,7 @@ DESCRIPTION::
 
 INSTANCEMETHODS::
 
-PRIVATE:: prInit, prDkey, prV0, prV1
+PRIVATE:: prInit, prV0, prV1
 
 
 EXAMPLES::
