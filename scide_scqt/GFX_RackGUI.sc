@@ -3,7 +3,7 @@
 GFX_RackGUI : AbstractGFXGUI {
 	classvar <>numModulesBeforeScroll= 8;
 
-	prInit {|version, skin|
+	prInit {|parent, bounds, version, skin|
 		var hl, header, canvas;
 		var macros, macroMenu;
 		var viewWidth= 0, viewHeight;
@@ -31,9 +31,9 @@ GFX_RackGUI : AbstractGFXGUI {
 		//--header
 		hl= HLayout();
 		header= View().layout_(VLayout(hl).margins_(0));
-		hl.add(GUICV.staticText.string_("vol:").resizeToHint);
+		hl.add(GUICV.staticText.string_("vol:"));
 		hl.add(GUICV.numberBox.action_({|v| efx.vol_(v.value)}));
-		hl.add(GUICV.staticText.string_("lags:").resizeToHint);
+		hl.add(GUICV.staticText.string_("lags:"));
 		hl.add(GUICV.numberBox.action_({|v| efx.lags_(v.value)}).clipLo_(0));
 		hl.add(nil);
 		hl.add(
@@ -48,6 +48,8 @@ GFX_RackGUI : AbstractGFXGUI {
 			.focus(true)  //initially give button focus as it is harmless
 			.states_([["<"]])
 		);
+		header.children.do{|v| v.maxSize_(Size(skin.knobWidth, skin.buttonHeight))};
+		macroMenu.maxWidth_(skin.knobWidth*2);
 		header.layout.add(
 			View().background_(skin.fontColor).fixedHeight_(1)  //thin separator
 		);
@@ -68,7 +70,7 @@ GFX_RackGUI : AbstractGFXGUI {
 		};
 
 		//--window / view
-		view= View().layout_(
+		view= View(parent, bounds).layout_(
 			VLayout(
 				header,
 				ScrollView().canvas_(canvas).hasBorder_(false).canFocus_(false)
@@ -78,8 +80,7 @@ GFX_RackGUI : AbstractGFXGUI {
 		.resizeTo(
 			viewWidth+(skin.margin.x*2)+(skin.spacing*2),
 			viewHeight+(skin.margin.y*2)
-		)
-		.minWidth_(150);
+		);
 
 		canvas.keyDownAction_({true});  //block arrow keys scrolling
 	}

@@ -91,7 +91,7 @@ GFX_Rack : AbstractGFX {
 	}
 
 	gui {|position, version= 0|
-		^GFX_RackGUI(this, position, version)
+		^GFX_RackGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
 	}
 
 	//--synth

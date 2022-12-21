@@ -136,7 +136,7 @@ GFX_Module : AbstractGFX {
 	}
 
 	gui {|position, version= 0|
-		^GFX_ModuleGUI(this, position, version)
+		^GFX_ModuleGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
 	}
 
 	//--synth

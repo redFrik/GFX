@@ -2,7 +2,7 @@
 
 GFX_ModuleGUI : AbstractGFXGUI {
 
-	prInit {|version, skin|
+	prInit {|parent, bounds, version, skin|
 		var label, controller;
 		var hl= HLayout().margins_(skin.margin.asArray).spacing_(skin.spacing);
 
@@ -18,13 +18,12 @@ GFX_ModuleGUI : AbstractGFXGUI {
 		efx.cvs[\pause].changed(\value);
 		hl.add(label, 1, \right);
 
-		view= View().layout_(hl);
-		view.name_(efx.def.name);
-
-		view.onClose_({controller.remove});
+		view= View(parent, bounds).layout_(hl)
+		.name_(efx.def.name)
+		.onClose_({controller.remove});
 	}
 
-	prDkey {|guiCV|
+	prDkey {|guiCV|  //key D for spec default
 		guiCV.keyDownAction_({|v ...args|
 			v.defaultKeyDownAction(*args);
 			if(args[0]==$d, {
@@ -37,11 +36,11 @@ GFX_ModuleGUI : AbstractGFXGUI {
 		efx.specs.do{|assoc|
 			var ref= efx.cvs[assoc.key];
 			var spec= assoc.value;
-			var slider, vl, knob;
+			var vl, slider, knob, number, text;
 
 			//--mix slider
 			if(efx.mixKeys.includes(assoc.key), {
-				slider= GUICVSliderLabel(ref, spec, (string: assoc.key));
+				slider= GUICVSliderLabel(nil, nil, ref, spec, (string: assoc.key));
 				this.prDkey(slider);
 				hl.add(slider);
 
@@ -49,11 +48,18 @@ GFX_ModuleGUI : AbstractGFXGUI {
 
 				//--knob, numberbox and label
 				vl= VLayout().spacing_(1);
-				knob= GUICVKnob(ref, spec, update:false);
+
+				knob= GUICVKnob(nil, nil, ref, spec, update:false);
 				this.prDkey(knob);
+
+				number= GUICVNumberBox(nil, nil, ref, spec)
+				.fixedSize_(Size(skin.knobWidth, skin.buttonHeight));
+
+				text= GUICV.staticText.string_(assoc.key);
+
 				vl.add(knob, align: \center);
-				vl.add(GUICVNumberBox(ref, spec), align: \center);
-				vl.add(GUICV.staticText.string_(assoc.key), align: \center);
+				vl.add(number, align: \center);
+				vl.add(text, align: \center);
 				hl.add(vl);
 			});
 		};
@@ -65,18 +71,19 @@ GFX_ModuleGUI : AbstractGFXGUI {
 		efx.specs.do{|assoc|
 			var ref= efx.cvs[assoc.key];
 			var spec= assoc.value;
-			var v, n;
+			var slider, number;
 
-			v= GUICVSliderLabel(ref, spec, (string: assoc.key));
-			v.orientation_(\horizontal);
-			v.asView.minWidth_(skin.sliderHeight).fixedHeight_(skin.buttonHeight);
-			v.minWidth_(skin.sliderHeight).fixedHeight_(skin.buttonHeight);
-			this.prDkey(v);
+			slider= GUICVSliderLabel(nil, nil, ref, spec, (string: assoc.key))
+			.fixedHeight_(skin.buttonHeight)
+			.minWidth_(skin.knobWidth*2)
+			.orientation_(\horizontal);
+			this.prDkey(slider);
 
-			n= GUICVNumberBox(ref, spec);
-			n.fixedSize_(Size(skin.knobWidth, skin.buttonHeight));
+			number= GUICVNumberBox(nil, nil, ref, spec)
+			.fixedHeight_(skin.buttonHeight)
+			.minWidth_(skin.knobWidth);
 
-			vl.add(HLayout(v, n));
+			vl.add(HLayout(slider, number));
 		};
 		hl.add(vl);
 	}

@@ -6,17 +6,16 @@ AbstractGFXGUI : SCViewHolder {
 
 	var <efx;  //a GFX_Module or a GFX_Rack
 
-	*new {|efx, position, version= 0|
-		^super.new.initAbstractGFXGUI(efx, position, version)
+	*new {|efx, parent, bounds, version= 0|
+		^super.new.initAbstractGFXGUI(efx, parent, bounds, version)
 	}
 
-	initAbstractGFXGUI {|argEfx, position, version|
+	initAbstractGFXGUI {|argEfx, parent, bounds, version|
 		var skin= GUI.skins.guiCV;
 		efx= argEfx;
-		position= position ?? {Point(300, 100)};
-		this.prInit(version, skin);
+		this.prInit(parent, bounds, version, skin);
 		view.background_(skin.background);
-		view.front.moveTo(position.x, position.y);
+		view.front;
 		CmdPeriod.doOnce({view.close});
 	}
 }
