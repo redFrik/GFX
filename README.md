@@ -2,13 +2,13 @@ a [Quark](https://supercollider-quarks.github.io/quarks/) for [SuperCollider](ht
 
 # GFX
 
-Green effects module system with optional GUI.
+Green effects module system with optional GUI. Modules automatically adapt to any number of channels.
 
 Based on redModule in the [redSys](https://github.com/redFrik/redSys) quark.
 
 ## Requirements
 
-[SuperCollider](https://supercollider.github.io) version 3.10 or newer running under macOS, Linux or Windows.
+[SuperCollider](https://supercollider.github.io) version 3.9 or newer running under macOS, Linux or Windows.
 
 ## Dependancies
 
