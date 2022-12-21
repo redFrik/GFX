@@ -102,7 +102,7 @@ AbstractGFX {
 
 	restoreDefaults {|skipMix= false|
 		cvs.keysValuesDo{|k, v|
-			if((skipMix and:{lookup[k]==\mix}).not, {
+			if((skipMix and:{lookup[k]==\mix}).not and:{k!=\pause}, {
 				v.value_(this.specForKey(k).default).changed(\value);
 			});
 		};
