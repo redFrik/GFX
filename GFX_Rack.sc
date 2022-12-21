@@ -7,11 +7,11 @@ GFX_Rack : AbstractGFX {
 	var <outbus;  //will initially be set to same as bus argument
 
 	*new {|efxs, target, bus= 0, lags= 0.1, numChannels= 2, action|
-		^super.new.initGFX_Rack(efxs, target, bus, lags, numChannels, action, false)
+		^super.new2.initGFX_Rack(efxs, target, bus, lags, numChannels, action, false)
 	}
 
 	*newPaused {|efxs, target, bus= 0, lags= 0.1, numChannels= 2, action|
-		^super.new.initGFX_Rack(efxs, target, bus, lags, numChannels, action, true)
+		^super.new2.initGFX_Rack(efxs, target, bus, lags, numChannels, action, true)
 	}
 
 	initGFX_Rack {|argEfxs, target, bus, lags, argNum, action, paused|

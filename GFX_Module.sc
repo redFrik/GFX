@@ -5,10 +5,6 @@ GFX_Module : AbstractGFX {
 	var <prefix;
 	var controllers;
 
-	*new {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
-		^super.new.initGFX_Module(target, bus, lags, numChannels, addAction, args, false)
-	}
-
 	*newPaused {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
 		^super.new.initGFX_Module(target, bus, lags, numChannels, addAction, args, true)
 	}
