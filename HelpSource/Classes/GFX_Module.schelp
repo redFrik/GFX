@@ -7,27 +7,28 @@ related:: Classes/GFX_ModuleGUI, Classes/GFX_Rack, Classes/GFX_RackGUI
 DESCRIPTION::
 
 NOTE::
-it is recommended to instantiate the subclasses directly...
+it is recommended to instantiate the effect subclasses directly...
 CODE::
 GFX_Module.subclasses;
 ::
 ::
 
-CLASSTREE:: GFX_Module
-
 
 CLASSMETHODS::
 
-METHOD:: new
-
 METHOD:: newPaused
+For saving CPU a module can be started with its internal synth paused (running state set to false - see LINK::Classes/Node#-run::). Modules are then automatically unpaused as soon as the mix parameter is > 0.0
+
+NOTE:: might click with reverb and delay effect modules::
 
 METHOD:: newModule
+Convenience method for calling .new on some some subclass (efx).
 
 METHOD:: ar
+subclassResponsibility
 
 METHOD:: specs
-
+subclassResponsibility
 
 INSTANCEMETHODS::
 
@@ -45,5 +46,12 @@ METHOD:: gui
 EXAMPLES::
 
 CODE::
-test
+s.boot;
+
+a= {SinOsc.ar([400, 404], 0, 0.1)}.play;
+
+g= GFXPch2();
+g.pch2Mix= 0.5;
+g.pch2Ratio= 1.1;
+g.free;
 ::

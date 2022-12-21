@@ -7,3 +7,59 @@ DESCRIPTION::
 Green effects module system with optional GUI.
 
 Based on redModule in the redSys quark ( https://github.com/redFrik/redSys )
+
+SUBSECTION:: Class hierarchy
+
+CLASSTREE:: AbstractGFX
+
+EXAMPLES::
+
+SUBSECTION:: module
+
+CODE::
+s.boot;
+
+g= GFXPch2();
+a= {SinOsc.ar([400, 404], 0, 0.1)}.play;
+g.pch2Mix= 0.5;
+g.pch2Ratio= 1.1;
+g.pch2Ratio;
+
+g.values;
+g.cvs;
+g.specs;
+g.numChannels;
+
+//--optional GUI
+g.gui;
+g.gui(version:1);
+
+g.restoreDefault;
+g.free;
+a.free;
+::
+
+SUBSECTION:: as UGen
+
+CODE::
+a= {GFXPch2.ar(SinOsc.ar([400, 404], 0, 0.1), MouseX.kr(-4, 4))}.play;
+a.free;
+::
+
+SUBSECTION:: rack
+
+CODE::
+a= {SinOsc.ar([400, 404], 0, 0.1)}.play;
+r= GFX_Rack([GFXFreq, GFXTanh, GFXPch2, GFXTank]);
+r.pch2Mix= 0.5;
+r.tanhMix= 0.25;
+r.freqMix= 1;
+r.freqShift= 10;
+
+//--optional gui
+r.gui;
+r.gui(version:1);
+
+r.free;
+a.free;
+::

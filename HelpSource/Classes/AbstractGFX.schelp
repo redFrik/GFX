@@ -13,6 +13,8 @@ This is an abstract class. Do not instantiate - use the subclasses
 
 CLASSMETHODS::
 
+PRIVATE:: new2
+
 METHOD:: new
 
 

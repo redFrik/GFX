@@ -7,10 +7,8 @@ related:: Classes/AbstractGFX, Classes/AbstractGUICV
 DESCRIPTION::
 
 NOTE::
-This is an abstract class. Do not instantiate - use the subclasses
+This is an abstract class. Do not instantiate - use the subclasses.
 ::
-
-CLASSTREE:: AbstractGFXGUI
 
 
 CLASSMETHODS::
@@ -19,7 +17,9 @@ METHOD:: new
 
 ARGUMENT:: efx
 
-ARGUMENT:: position
+ARGUMENT:: parent
+
+ARGUMENT:: bounds
 
 ARGUMENT:: version
 
