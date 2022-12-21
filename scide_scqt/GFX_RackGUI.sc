@@ -1,7 +1,7 @@
 //related: GFX_Rack, GFX_ModuleGUI, RedEffectsRackGUI
 
 GFX_RackGUI : AbstractGFXGUI {
-	classvar <>numModulesBeforeScroll= 8;
+	classvar >numModulesBeforeScroll= 8;
 
 	prInit {|parent, bounds, version, skin|
 		var hl, header, canvas;

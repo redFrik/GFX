@@ -39,10 +39,31 @@ METHOD:: lags
 METHOD:: pause
 
 METHOD:: gui
+Create a LINK::Classes/GFX_RackGUI::.
 
+ARGUMENT:: position
+A LINK::Classes/Point::
+
+ARGUMENT:: version
+An LINK::Classes/Integer:: defining style.
+
+RETURNS:: a LINK::Classes/GFX_RackGUI::
+
+DISCUSSION::
+NOTE::
+This will not work...
+
+CODE::GFX_Rack().gui::
+
+Instead use the action function...
+
+CODE::GFX_Rack(action:{|g| g.gui})::
+::
 
 EXAMPLES::
 
 CODE::
-test
+r= GFX_Rack();
+r.efxs;  //default modules
+
 ::

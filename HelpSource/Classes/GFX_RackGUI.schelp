@@ -9,6 +9,7 @@ DESCRIPTION::
 CLASSMETHODS::
 
 METHOD:: numModulesBeforeScroll
+Maximum number of effect modules that will fit in the window. If more effects are in the rack the window will scoll vertically. The default is 8.
 
 
 INSTANCEMETHODS::

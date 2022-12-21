@@ -8,9 +8,21 @@ Green effects module system with optional GUI.
 
 Based on redModule in the redSys quark ( https://github.com/redFrik/redSys )
 
+
 SUBSECTION:: Class hierarchy
 
 CLASSTREE:: AbstractGFX
+
+
+SUBSECTION:: Optional GUI
+
+IMAGE::../Images/GFX_RackGUI_v0.png::
+IMAGE::../Images/GFX_RackGUI_v1.png::
+IMAGE::../Images/GFXPch2GUI_v0.png::
+IMAGE::../Images/GFXPch2GUI_v1.png::
+IMAGE::../Images/GFXTankGUI_v0.png::
+IMAGE::../Images/GFXTankGUI_v1.png::
+
 
 EXAMPLES::
 

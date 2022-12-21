@@ -14,14 +14,17 @@ This is an abstract class. Do not instantiate - use the subclasses.
 CLASSMETHODS::
 
 METHOD:: new
+Create a new LINK::Classes/Window:: (or embedded LINK::Classes/View::) from whichever subclass (LINK::Classes/GFX_ModuleGUI:: or LINK::Classes/GFX_RackGUI::).
 
 ARGUMENT:: efx
+A LINK::Classes/GFX_Module:: or a LINK::Classes/GFX_Rack::.
 
 ARGUMENT:: parent
 
 ARGUMENT:: bounds
 
 ARGUMENT:: version
+An LINK::Classes/Integer:: defining style.
 
 
 INSTANCEMETHODS::
@@ -29,10 +32,28 @@ INSTANCEMETHODS::
 PRIVATE:: initAbstractGFXGUI
 
 METHOD:: efx
+The LINK::Classes/GFX_Module:: or LINK::Classes/GFX_Rack:: instance that is connected to this GUI.
 
 
 EXAMPLES::
 
 CODE::
-test
+s.boot;
+a= {SinOsc.ar([400, 404], 0, 0.1)}.play;
+
+b= GFXPch2();
+c= b.gui;  //here we create a GFX_ModuleGUI
+b.pch2Mix= 0.5;
+b.pch2Ratio= 2;
+c.close;
+b.free;
+
+b= GFX_Rack();
+c= b.gui;  //here we create a GFX_RackGUI
+b.freqMix= 0.5;
+b.freqShift= 100;
+c.close;
+b.free;
+
+a.free;
 ::
