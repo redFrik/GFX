@@ -86,7 +86,7 @@ GFX_Rack : AbstractGFX {
 			def.doSend(server, synth.newMsg(group, [\bus, bus], \addToTail));
 			server.sync;
 
-			action.value(this);
+			{action.value(this)}.defer;
 		};
 	}
 
