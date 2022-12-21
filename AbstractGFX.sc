@@ -12,7 +12,7 @@ AbstractGFX {
 	var <numChannels;
 
 	*new {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
-		^super.new2.initGFX_Module(target, bus, lags, numChannels, addAction, args, false)
+		^this.new2.initGFX_Module(target, bus, lags, numChannels, addAction, args, false)
 	}
 
 	*new2 {
