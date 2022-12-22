@@ -5,12 +5,12 @@ GFX_Module : AbstractGFX {
 	var <prefix;
 	var controllers;
 
-	*newPaused {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
-		^super.new.initGFX_Module(target, bus, lags, numChannels, addAction, args, true)
-	}
-
 	*newModule {|efx, target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
 		^efx.new(target, bus, lags, numChannels, addAction, args, false)
+	}
+
+	*newPaused {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
+		^super.new.initGFX_Module(target, bus, lags, numChannels, addAction, args, true)
 	}
 
 	initGFX_Module {|target, bus, lags, argNum, addAction, args, argPaused|

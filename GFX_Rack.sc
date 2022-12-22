@@ -2,8 +2,8 @@
 
 GFX_Rack : AbstractGFX {
 
-	var <group;
 	var <efxs;
+	var <group;
 	var <outbus;  //will initially be set to same as bus argument
 
 	*new {|efxs, target, bus= 0, lags= 0.1, numChannels= 2, action|
