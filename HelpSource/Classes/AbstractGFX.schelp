@@ -17,6 +17,18 @@ PRIVATE:: new2
 
 METHOD:: new
 
+ARGUMENT:: target
+
+ARGUMENT:: bus
+
+ARGUMENT:: lags
+
+ARGUMENT:: numChannels
+
+ARGUMENT:: addAction
+
+ARGUMENT:: args
+
 
 INSTANCEMETHODS::
 
@@ -59,10 +71,3 @@ METHOD:: bypass
 METHOD:: restoreDefaults
 
 METHOD:: gui
-
-
-EXAMPLES::
-
-CODE::
-test
-::

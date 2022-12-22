@@ -18,19 +18,19 @@ CODE::
 s.boot;
 a= {SinOsc.ar([400, 404], 0, 0.1)}.play;
 
+b= GFXPch2();
+c= b.gui;  //here we create a GFX_ModuleGUI
+b.pch2Mix= 0.5;
+b.pch2Ratio= 2;
+c.close;
+b.free;
+
+//also possible but more complicated
 b= GFX_ModuleGUI(GFXPch2());
 b.efx.pch2Mix= 0.5;
 b.efx.pch2Ratio= 2;
 b.close;
 b.efx.free;
-
-//a better and easier way is to use .gui
-b= GFXPch2();
-c= b.gui;
-b.pch2Mix= 0.5;
-b.pch2Ratio= 2;
-c.close;
-b.free;
 
 a.free;
 ::

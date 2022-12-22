@@ -7,7 +7,7 @@ related:: Classes/GFX_ModuleGUI, Classes/GFX_Rack, Classes/GFX_RackGUI
 DESCRIPTION::
 
 NOTE::
-it is recommended to instantiate the effect subclasses directly...
+it is recommended to instantiate the effect subclasses directly. See under LINK::#EXAMPLES#Examples:: below.
 CODE::
 GFX_Module.subclasses;
 ::
@@ -17,7 +17,7 @@ GFX_Module.subclasses;
 CLASSMETHODS::
 
 METHOD:: newPaused
-For saving CPU a module can be started with its internal synth paused (running state set to false - see LINK::Classes/Node#-run::). Modules are then automatically unpaused as soon as the mix parameter is > 0.0
+For saving CPU a module can be started with its internal LINK::Classes/AbstractGFX#-synth#synth:: paused (running state set to false - see LINK::Classes/Node#-run::). Modules are then automatically unpaused as soon as the mix parameter is > 0.0
 
 NOTE:: might click with reverb and delay effect modules::
 

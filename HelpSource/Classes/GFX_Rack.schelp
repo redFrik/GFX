@@ -63,7 +63,7 @@ CODE::GFX_Rack(action:{|g| g.gui})::
 EXAMPLES::
 
 CODE::
-r= GFX_Rack();
+r= GFX_Rack();  //will boot the default server if not already running
 r.efxs;  //default modules
 
 ::

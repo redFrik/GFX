@@ -33,27 +33,3 @@ PRIVATE:: initAbstractGFXGUI
 
 METHOD:: efx
 The LINK::Classes/GFX_Module:: or LINK::Classes/GFX_Rack:: instance that is connected to this GUI.
-
-
-EXAMPLES::
-
-CODE::
-s.boot;
-a= {SinOsc.ar([400, 404], 0, 0.1)}.play;
-
-b= GFXPch2();
-c= b.gui;  //here we create a GFX_ModuleGUI
-b.pch2Mix= 0.5;
-b.pch2Ratio= 2;
-c.close;
-b.free;
-
-b= GFX_Rack();
-c= b.gui;  //here we create a GFX_RackGUI
-b.freqMix= 0.5;
-b.freqShift= 100;
-c.close;
-b.free;
-
-a.free;
-::

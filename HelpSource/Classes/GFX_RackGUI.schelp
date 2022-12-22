@@ -20,5 +20,15 @@ PRIVATE:: prInit
 EXAMPLES::
 
 CODE::
-test
+s.boot;
+a= {SinOsc.ar([400, 404], 0, 0.1)}.play;
+
+b= GFX_Rack();
+c= b.gui;  //here we create a GFX_RackGUI
+b.freqMix= 0.5;
+b.freqShift= 100;
+c.close;
+b.free;
+
+a.free;
 ::
