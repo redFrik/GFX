@@ -9,20 +9,53 @@ DESCRIPTION::
 
 CLASSMETHODS::
 
-METHOD:: new
+METHOD:: new, newPaused
 
-METHOD:: newPaused
+ARGUMENT:: efxs
+An LINK::Classes/Array:: with LINK::Classes/GFX_Module:: STRONG::classes:: or STRONG::instances:: to be put into the rack. If not specified a default set of modules will be used. CODE::[GFXComb, GFXFreq, GFXRvrs, GFXTank, GFXTanh, GFXZzzz]::
+NOTE::
+Order is important - determines signal flow.
+::
+CODE::
+//simple example with 4 effects (stereo)
+(
+r= GFX_Rack([
+	GFXFreq,
+	GFXPch2(),  //an instance will be hijacked (insert in order and set bus)
+	GFXTanh,
+	GFXTank
+]);
+)
+::
+
+ARGUMENT:: target
+A LINK::Classes/Server:: or a LINK::Classes/Group::. If not given CODE::Server.default:: will be used (and automatically booted if not already running).
+
+ARGUMENT:: bus
+Which audio bus to use as input and output for the rack. See LINK::#-outbus:: for routing the output elsewhere. Note that several consecutive busses might be used - depends on numChannels argument.
+
+ARGUMENT:: lags
+A single LINK::Classes/Float:: or an LINK::Classes/Array:: of floats specifying general lag time for parameters.
+
+ARGUMENT:: numChannels
+The default is stereo but can be any number.
+
+ARGUMENT:: action
+A LINK::Classes/Function:: to be evaluated after the rack is finished setting up. The function will be deferred and called on the LINK::Classes/AppClock::.
 
 
 INSTANCEMETHODS::
 
 PRIVATE:: initGFX_Rack, prBuildDef
 
-METHOD:: group
-
 METHOD:: efxs
+An LINK::Classes/Array:: with current LINK::Classes/GFX_Module:: STRONG::instances:: (compare with creation methods above where classes or instances are expected).
+
+METHOD:: group
+The LINK::Classes/Group:: that the rack is using. If target wasn't specified when the rack was created this will be CODE::Server.default.defaultGroup::.
 
 METHOD:: outbus
+Which audio bus to use as output for the rack. By default this will be the same as bus in LINK::#*new:: above. Set this to route audio elsewhere. Note that several consecutive busses might be used - depends on numChannels argument.
 
 METHOD:: vol
 
@@ -37,6 +70,7 @@ METHOD:: free
 METHOD:: lags
 
 METHOD:: pause
+Call pause on all effect modules.
 
 METHOD:: gui
 Create a LINK::Classes/GFX_RackGUI::.
@@ -60,10 +94,18 @@ Instead use the action function...
 CODE::GFX_Rack(action:{|g| g.gui})::
 ::
 
+
 EXAMPLES::
 
-CODE::
-r= GFX_Rack();  //will boot the default server if not already running
-r.efxs;  //default modules
+SUBSECTION:: Basics
 
+CODE::
+s.boot;
+a= {SinOsc.ar([400, 404], 0, 0.1)}.play;  //test sound
+
+r= GFX_Rack();
+r.efxs;  //default modules
+r.freqMix= 0.5;
+
+g= r.gui;  //optional gui
 ::

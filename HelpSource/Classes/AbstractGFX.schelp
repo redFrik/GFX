@@ -1,7 +1,7 @@
 class:: AbstractGFX
 summary:: abstract class for effect modules and effects rack
 categories:: Green
-related:: Classes/AbstractGFXGUI
+related:: Classes/AbstractGFXGUI, Overviews/GFX_Overview
 
 
 DESCRIPTION::
@@ -35,39 +35,97 @@ INSTANCEMETHODS::
 PRIVATE:: initAbstractGFX, prBuildDef, prAddMethod
 
 METHOD:: specs
+An array of parameter key -> LINK::Classes/ControlSpec:: associations.
 
 METHOD:: cvs
+A dictionary with parameter keys -> LINK::Classes/Ref:: associations.
 
 METHOD:: lookup
+A dictionary with parameter key -> CODE::*ar:: class method argument name associations. Mainly used inside of classes.
 
 METHOD:: def
+The generated LINK::Classes/SynthDef::. The def's name will be the same as the name of the class suffixed with an underscore + number of channels.
 
 METHOD:: synth
+Access the internal LINK::Classes/Synth::. Seldom neded.
 
 METHOD:: numChannels
+Set when created. By default this is 2 (stereo).
 
 METHOD:: bus
+Get or set the audio bus (in and out).
 
 METHOD:: free
+Free the internal synth.
 
 METHOD:: get
+Get the normalised value for some parameter key.
+
+ARGUMENT:: key
+Parameter key as a LINK::Classes/Symbol::
+
+RETURNS::
+A LINK::Classes/Float::.
 
 METHOD:: set
+Set the normalised value for some parameter key.
+
+ARGUMENT:: key
+Parameter key as a LINK::Classes/Symbol::
+
+ARGUMENT:: val
+A normalised LINK::Classes/Float:: (between 0.0 and 1.0).
 
 METHOD:: softSet
+Set the normalised value for some parameter key. Only change value if val is within range of the current parameter value. Useful for MIDI controllers.
+
+ARGUMENT:: key
+Parameter key as a LINK::Classes/Symbol::
+
+ARGUMENT:: val
+A normalised LINK::Classes/Float:: (between 0.0 and 1.0).
+
+ARGUMENT:: within
+A LINK::Classes/Float:: specifying a range (+/-).
+
+RETURNS::
+LINK::Classes/True:: if current widget value was updated, LINK::Classes/False:: if not (out of range).
 
 METHOD:: active
+If mix > 0.0 i.e. the effect is doing something to the sound.
+
+RETURNS:: a LINK::Classes/Boolean::.
 
 METHOD:: mixKeys
+An LINK::Classes/Array:: of symbols representing mix parameter keys. Unordered.
 
 METHOD:: specForKey
+Convenience method for looking up a parameter's LINK::Classes/ControlSpec::.
+
+CODE::
+g.specForKey(\freqMix);
+-> a ControlSpec(0, 1, 'linear', 0, 0, "")
+::
 
 METHOD:: defaults
+An LINK::Classes/Array:: of key value pairs representing the spec defaults of all parameters. Unordered.
 
 METHOD:: values
+An LINK::Classes/Array:: of key value pairs representing the current settings of all parameters. Unordered.
 
 METHOD:: bypass
+Convenience method for setting all mix to 0.0
 
 METHOD:: restoreDefaults
+Set all values to defaults.
 
 METHOD:: gui
+Generate a GUI.
+
+ARGUMENT:: position
+A LINK::Classes/Point::.
+
+ARGUMENT:: version
+GUI style / variant.
+
+RETURNS:: an instance of one of the LINK::Classes/AbstractGFXGUI:: subclasses.

@@ -114,7 +114,7 @@ AbstractGFX {
 
 	//--required methods
 
-	gui {^this.subclassResponsibility(thisMethod)}
+	gui {|position, version= 0| ^this.subclassResponsibility(thisMethod)}
 
 	prBuildDef {^this.subclassResponsibility(thisMethod)}
 

@@ -6,6 +6,21 @@ Green effects module system with optional GUI. Modules automatically adapt to an
 
 Based on the older redModule in the [redSys](https://github.com/redFrik/redSys) quark.
 
+### Basic example:
+
+```supercollider
+s.boot;
+a= {SinOsc.ar([400, 404], 0, 0.25)}.play;
+
+b= GFXPch2();
+b.pch2Mix= 0.5;
+b.pch2Ratio= 2;
+
+c= b.gui;  //optional GUI. though notice the code<->gui linkage
+
+c.close; b.free; a.free;
+```
+
 ## Requirements
 
 [SuperCollider](https://supercollider.github.io) version 3.9 or newer running under macOS, Linux or Windows.

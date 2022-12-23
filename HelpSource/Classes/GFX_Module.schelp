@@ -7,7 +7,7 @@ related:: Classes/GFX_ModuleGUI, Classes/GFX_Rack, Classes/GFX_RackGUI
 DESCRIPTION::
 
 NOTE::
-it is recommended to instantiate the effect subclasses directly. See under LINK::#EXAMPLES#Examples:: below.
+It is recommended to instantiate the effect subclasses directly. See LINK::#Basics:: below.
 CODE::
 GFX_Module.subclasses;
 ::
@@ -16,13 +16,13 @@ GFX_Module.subclasses;
 
 CLASSMETHODS::
 
+METHOD:: newModule
+Convenience method for calling CODE::.new:: on some some subclass (efx).
+
 METHOD:: newPaused
 For saving CPU a module can be started with its internal LINK::Classes/AbstractGFX#-synth#synth:: paused (running state set to false - see LINK::Classes/Node#-run::). Modules are then automatically unpaused as soon as the mix parameter is > 0.0
 
 NOTE:: might click with reverb and delay effect modules::
-
-METHOD:: newModule
-Convenience method for calling .new on some some subclass (efx).
 
 METHOD:: ar
 subclassResponsibility
@@ -43,15 +43,72 @@ METHOD:: free
 METHOD:: gui
 
 
+SUBSECTION:: Generated methods
+
+DEFINITIONLIST::
+## .pause || LINK::Classes/Boolean::. Get or set pause (uses LINK::Classes/Node#-run:: under the hood so might click).
+## ...Mix || LINK::Classes/Float::. Get or set the dry/wet mix 0.0 - 1.0. Exact method name will depend on class name. E.g. CODE::.pch2Mix::
+## ...ParameterName || Get or set effect parameters. Exact method names are defined in the CODE::*specs:: class method. E.g. CODE::.pch2Ratio::
+::
+
+
 EXAMPLES::
+
+SUBSECTION:: Basics
 
 CODE::
 s.boot;
-
-a= {SinOsc.ar([400, 404], 0, 0.1)}.play;
+a= {SinOsc.ar([400, 404], 0, 0.1)}.play;  //test sound
 
 g= GFXPch2();
 g.pch2Mix= 0.5;
 g.pch2Ratio= 1.1;
-g.free;
+
+//optional GUI
+b= g.gui;
+
+b.close; g.free; a.free;
+
+//directly as pseudo UGen
+a= {GFXPch2.ar(SinOsc.ar([400, 404], 0, 0.1))}.play;
+a.free;
+::
+
+SUBSECTION:: Writing custom modules
+
+It is fairly easy to add your own custom effect modules. Just follow the following guidelines...
+
+LIST::
+## Write a class that is a subclass of LINK::Classes/GFX_Module::.
+## Add two class methods called CODE::*ar:: and CODE::*specs::.
+## For CODE::*ar:: the first argument must be called CODE::in::. This argument will be the incoming audio and should deal with any number of channels.
+## Avoid the reserved arguments CODE::mix::, CODE::pause:: and CODE::bus::. CODE::*ar:: argument order will determine parameter sorting in the GUI.
+## The CODE::*specs:: class method should return an LINK::Classes/Event:: with parameter names as keys and specs as values. There is a little bit of magic here as the key names should follow the naming convention prefixParameter (see example below).
+::
+
+Simple module example class...
+
+CODE::
+GFXFreq : GFX_Module {
+
+	*ar {|in, shift= -50|
+		^FreqShift.ar(in, shift)
+	}
+
+	*specs {
+		^(
+			freqShift: ControlSpec(-1000, 1000)
+		)
+	}
+}
+::
+
+See the classes in the folder Modules for more examples.
+
+A properly written a custom class can be used like any other module - including being added to a LINK::Classes/GFX_Rack::, as a LINK::Classes/SynthDef:: variant (with optional GUI) or as a pseudo LINK::Classes/UGen:: variant...
+
+CODE::
+GFXFreq().gui;  //SynthDef variant with gui
+
+{GFXFreq.ar(SinOsc.ar)}.play;  //pseudo UGen variant
 ::

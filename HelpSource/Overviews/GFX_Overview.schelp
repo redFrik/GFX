@@ -1,6 +1,7 @@
 TITLE:: GFX_Overview
 SUMMARY:: GFX system overview
 CATEGORIES:: Green
+RELATED:: Classes/GFX_Module, Classes/GFX_Rack
 
 DESCRIPTION::
 
@@ -8,13 +9,32 @@ Green effects module system with optional GUI.
 
 Based on redModule in the redSys quark ( https://github.com/redFrik/redSys )
 
+Provides SynthDef+Synth construction, pseudo UGen support, code<->GUI linkage and automatic GUI generation with minimal code (see Modules folder - basically just an CODE::*ar:: method and some specs - see LINK::Classes/GFX_Module#Writing custom modules::).
+
 
 SUBSECTION:: Class hierarchy
 
+Normally one would select a few modules and put them in a rack...
+CODE::
+GFX_Rack([GFXFreq, GFXPch2, GFXTank]);
+::
+and not use the LINK::Classes/AbstractGFX:: and LINK::Classes/GFX_Module:: classes.
+
+
+STRONG::Available GFX classes:::
+
 CLASSTREE:: AbstractGFX
+
+STRONG:: Supporting GUI classes:::
+
+CLASSTREE:: AbstractGFXGUI
+
+and for these GUI classes just call CODE::.gui:: on the rack or on some effect module directly.
 
 
 SUBSECTION:: Optional GUI
+
+There are two versions. The standard one with knobs (v0) and a more compact one (v1) with silders and numberboxes.
 
 IMAGE::../Images/GFX_RackGUI_v0.png::
 IMAGE::../Images/GFX_RackGUI_v1.png::
@@ -23,6 +43,7 @@ IMAGE::../Images/GFXPch2GUI_v1.png::
 IMAGE::../Images/GFXTankGUI_v0.png::
 IMAGE::../Images/GFXTankGUI_v1.png::
 
+The LINK::Classes/AbstractGFX#-gui::. method has an argument for which version to use.
 
 EXAMPLES::
 
