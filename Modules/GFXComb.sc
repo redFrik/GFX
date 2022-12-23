@@ -1,4 +1,4 @@
-
+//simple delay
 
 GFXComb : GFX_Module {
 	classvar <>maxDel= 1;
