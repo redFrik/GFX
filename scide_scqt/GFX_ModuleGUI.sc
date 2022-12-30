@@ -15,8 +15,12 @@ GFX_ModuleGUI : AbstractGFXGUI {
 		controller= SimpleController(efx.cvs[\pause]).put(\value, {|ref|
 			label.stringColor_(if(ref.value, {skin.foreground}, {skin.fontColor}));
 		});
-		efx.cvs[\pause].changed(\value);
 		hl.add(label, 1, \right);
+
+		Routine({
+			efx.target.server.sync;
+			efx.cvs.do{|ref| ref.changed(\value)};
+		}).play(AppClock);
 
 		view= View(parent, bounds).layout_(hl)
 		.name_(efx.def.name)
@@ -31,7 +35,7 @@ GFX_ModuleGUI : AbstractGFXGUI {
 
 			//--mix slider
 			if(efx.mixKeys.includes(assoc.key), {
-				slider= GUICVSliderLabel(nil, nil, ref, spec, (string: assoc.key));
+				slider= GUICVSliderLabel(nil, nil, ref, spec, (string: assoc.key), false);
 				hl.add(slider);
 
 			}, {
@@ -39,9 +43,9 @@ GFX_ModuleGUI : AbstractGFXGUI {
 				//--knob, numberbox and label
 				vl= VLayout().spacing_(1);
 
-				knob= GUICVKnob(nil, nil, ref, spec, update:false);
+				knob= GUICVKnob(nil, nil, ref, spec, update: false);
 
-				number= GUICVNumberBox(nil, nil, ref, spec)
+				number= GUICVNumberBox(nil, nil, ref, spec, update: false)
 				.fixedSize_(Size(skin.knobWidth, skin.buttonHeight));
 
 				text= GUICV.staticText.string_(assoc.key);

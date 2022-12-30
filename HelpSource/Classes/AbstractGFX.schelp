@@ -13,21 +13,11 @@ This is an abstract class. Do not instantiate - use the subclasses
 
 CLASSMETHODS::
 
-PRIVATE:: new2
-
 METHOD:: new
 
 ARGUMENT:: target
 
-ARGUMENT:: bus
-
-ARGUMENT:: lags
-
 ARGUMENT:: numChannels
-
-ARGUMENT:: addAction
-
-ARGUMENT:: args
 
 
 INSTANCEMETHODS::
@@ -51,6 +41,9 @@ Access the internal LINK::Classes/Synth::. Seldom neded.
 
 METHOD:: numChannels
 Set when created. By default this is 2 (stereo).
+
+METHOD:: target
+If not set CODE::Server.default.defaultGroup:: will be used.
 
 METHOD:: bus
 Get or set the audio bus (in and out).

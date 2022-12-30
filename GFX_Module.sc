@@ -5,31 +5,29 @@ GFX_Module : AbstractGFX {
 	var <prefix;
 	var controllers;
 
-	*newModule {|efx, target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
-		^efx.new(target, bus, lags, numChannels, addAction, args, false)
-	}
-
-	*newPaused {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
-		^super.new.initGFX_Module(target, bus, lags, numChannels, addAction, args, true)
-	}
-
-	initGFX_Module {|target, bus, lags, argNum, addAction, args, argPaused|
-		var server, arArgs, synthArgs;
-
-		numChannels= argNum;
-		prefix= this.class.asString.replace("GFX").toLower;
-
-		target= target.asTarget;
-		server= target.server;
-		if(server.serverRunning.not, {
-			"%: server not running".format(this.class.name).warn;
+	*new {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
+		var trg= target.asTarget;
+		if(trg.server.serverRunning.not, {
+			"server % not running".format(trg.server).warn;
+			^nil
 		});
+		^super.new(trg, numChannels).initGFX_Module(bus, lags, addAction, args)
+	}
+
+	*newModule {|efx, target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
+		^efx.new(target, bus, lags, numChannels, addAction, args)
+	}
+
+	initGFX_Module {|bus, lags, addAction, args|
+		var arArgs, synthArgs;
+
+		prefix= this.class.asString.replace("GFX").toLower;
 
 		//--all modules automatically get a mix and a pause
 		specs= specs++((prefix++"Mix").asSymbol -> ControlSpec(0, 1, 'lin', 0, 0));
 		cvs.put(specs[0].key, Ref(0));
 		lookup.put(specs[0].key, \mix);
-		cvs.put(\pause, Ref(argPaused));
+		cvs.put(\pause, Ref(false));
 
 		//--add *ar arguments and defaults in order to specs and cvs
 		arArgs= this.class.class.findMethod(\ar).keyValuePairsFromArgs;
@@ -76,10 +74,12 @@ GFX_Module : AbstractGFX {
 				synthArgs.put(k, v);
 			}, {
 				if(cvs[k].notNil, {
-					v= this.specForKey(k).constrain(v);
-					synthArgs.put(lookup[k], v);
+					if(k!=\pause, {
+						v= this.specForKey(k).constrain(v);
+						synthArgs.put(lookup[k], v);
+						this.specForKey(k).default= v;  //update spec default from args
+					});
 					cvs[k].value= v;  //override Ref value
-					this.specForKey(k).default= v;  //update spec default from args
 				}, {
 					"%: argument '%' not found".format(this.class.name, k).warn;
 				});
@@ -102,7 +102,13 @@ GFX_Module : AbstractGFX {
 				}
 			}
 			{k==\pause} {
-				{|val| synth.run(val.not)}
+				{|val|
+					if(synth.notNil, {
+						target.server.makeBundle(target.server.latency, {
+							synth.run(val.not);
+						});
+					});
+				}
 			}
 			{
 				{|val| synth.set(name, val)}
@@ -124,11 +130,12 @@ GFX_Module : AbstractGFX {
 		def= this.prBuildDef(lags.dup(specs.size));
 
 		//--start synth
-		synth= Synth.basicNew(def.name, server);
-		def.doSend(server, synth.newMsg(target, synthArgs.asKeyValuePairs, addAction));
-		if(argPaused, {
-			server.makeBundle(server.latency, {synth.run(false)});  //TODO this will fail with latency=0
+		synth= Synth.basicNew(def.name, target.server);
+		def.doSend(target.server, synth.newMsg(target, synthArgs.asKeyValuePairs, addAction));
+		if(this.pause, {
+			target.server.makeBundle(target.server.latency, {synth.run(false)});
 		});
+		synth.onFree({synth= nil; this.free});
 	}
 
 	gui {|position, version= 0|

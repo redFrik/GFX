@@ -9,7 +9,7 @@ DESCRIPTION::
 
 CLASSMETHODS::
 
-METHOD:: new, newPaused
+METHOD:: new
 
 ARGUMENT:: efxs
 An LINK::Classes/Array:: with LINK::Classes/GFX_Module:: STRONG::classes:: or STRONG::instances:: to be put into the rack. If not specified a default set of modules will be used. CODE::[GFXComb, GFXFreq, GFXRvrs, GFXTank, GFXTanh, GFXZzzz]::
@@ -82,17 +82,6 @@ ARGUMENT:: version
 An LINK::Classes/Integer:: defining style.
 
 RETURNS:: a LINK::Classes/GFX_RackGUI::
-
-DISCUSSION::
-NOTE::
-This will not work...
-
-CODE::GFX_Rack().gui::
-
-Instead use the action function...
-
-CODE::GFX_Rack(action:{|g| g.gui})::
-::
 
 
 EXAMPLES::

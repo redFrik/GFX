@@ -2,20 +2,20 @@
 
 GFX_Rack : AbstractGFX {
 
-	var <efxs;
-	var <group;
+	var <efxs;  //Array of GFX_Module instances
+	var <group;  //internal Group
 	var <outbus;  //will initially be set to same as bus argument
 
 	*new {|efxs, target, bus= 0, lags= 0.1, numChannels= 2, action|
-		^super.new2.initGFX_Rack(efxs, target, bus, lags, numChannels, action, false)
+		var trg= target.asTarget;
+		if(trg.server.serverRunning.not, {
+			"server % not running".format(trg.server).warn;
+			^nil
+		});
+		^super.new(trg, numChannels).initGFX_Rack(efxs, bus, lags, action)
 	}
 
-	*newPaused {|efxs, target, bus= 0, lags= 0.1, numChannels= 2, action|
-		^super.new2.initGFX_Rack(efxs, target, bus, lags, numChannels, action, true)
-	}
-
-	initGFX_Rack {|argEfxs, target, bus, lags, argNum, action, paused|
-		numChannels= argNum;
+	initGFX_Rack {|argEfxs, bus, lags, action|
 
 		efxs= argEfxs.asArray;
 		if(efxs.isEmpty, {
@@ -26,68 +26,60 @@ GFX_Rack : AbstractGFX {
 			).postln;
 		});
 
-		fork{
-			var server;
+		outbus= bus;
 
-			outbus= bus;
-			target= target.asTarget;
-			server= target.server;
-			server.bootSync;
-			group= Group.tail(target);
+		group= Group.tail(target);
 
-			efxs= efxs.collect{|x|
-				if(x.isKindOf(GFX_Module), {
-					if(x.numChannels!=numChannels, {
-						"%: module % wrong numChannels".format(this.class.name, x.class.name).warn;
-					});
-					x.bus= bus;
-					x.lags= lags;
-					x.synth.moveToTail(group);
-				}, {
-					x= x.new(group, bus, lags, numChannels, \addToTail);
+		efxs= efxs.collect{|x|
+			if(x.isKindOf(GFX_Module), {
+				if(x.numChannels!=numChannels, {
+					"%: module % wrong numChannels".format(this.class.name, x.class.name).warn;
 				});
-				server.sync;
-				if(paused, {x.pause_(true)});
-				x
-			};
-
-			//--hijack all modules cvs, specs and lookup
-			efxs.do{|x|
-				x.specs.do{|assoc|
-					var keyStr, suffix;
-					var key= assoc.key;
-					var spec= assoc.value;
-					var ref= x.cvs[key];
-
-					//--add suffix for duplicate efx modules
-					if(cvs[key].notNil, {
-						keyStr= key.asString;
-						suffix= 0;
-						cvs.keysDo{|kk|
-							if(kk.asString.contains(keyStr), {
-								suffix= suffix+1;
-							});
-						};
-						key= (keyStr++$_++suffix).asSymbol;
-					});
-
-					specs= specs++(key -> spec);
-					cvs.put(key, ref);
-					lookup.put(key, x.lookup[assoc.key]);
-					this.prAddMethod(key, ref, spec);
-				};
-			};
-
-			//--generate synthdef
-			def= this.prBuildDef;
-
-			//--start synth
-			synth= Synth.basicNew(def.name, server);
-			def.doSend(server, synth.newMsg(group, [\bus, bus], \addToTail));
-			server.sync;
-
-			{action.value(this)}.defer;
+				x.bus= bus;
+				x.lags= lags;
+				x.synth.moveToTail(group);
+			}, {
+				x= x.new(group, bus, lags, numChannels, \addToTail);
+			});
+			x
 		};
+
+		//--hijack all modules cvs, specs and lookup
+		efxs.do{|x|
+			x.specs.do{|assoc|
+				var keyStr, suffix;
+				var key= assoc.key;
+				var spec= assoc.value;
+				var ref= x.cvs[key];
+
+				//--add suffix for duplicate efx modules
+				if(cvs[key].notNil, {
+					keyStr= key.asString;
+					suffix= 0;
+					cvs.keysDo{|kk|
+						if(kk.asString.contains(keyStr), {
+							suffix= suffix+1;
+						});
+					};
+					key= (keyStr++$_++suffix).asSymbol;
+				});
+
+				specs= specs++(key -> spec);
+				cvs.put(key, ref);
+				lookup.put(key, x.lookup[assoc.key]);
+				this.prAddMethod(key, ref, spec);
+			};
+		};
+
+		//--generate synthdef
+		def= this.prBuildDef;
+
+		//--start synth
+		synth= Synth.basicNew(def.name, target.server);
+		def.doSend(target.server, synth.newMsg(group, [\bus, bus], \addToTail));
+		synth.onFree({synth= nil; this.free});
+
+		{action.value(this)}.defer;
 	}
 
 	gui {|position, version= 0|

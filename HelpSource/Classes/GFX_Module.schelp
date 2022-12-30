@@ -16,13 +16,10 @@ GFX_Module.subclasses;
 
 CLASSMETHODS::
 
+METHOD:: new
+
 METHOD:: newModule
 Convenience method for calling CODE::.new:: on some some subclass (efx).
-
-METHOD:: newPaused
-For saving CPU a module can be started with its internal LINK::Classes/AbstractGFX#-synth#synth:: paused (running state set to false - see LINK::Classes/Node#-run::). Modules are then automatically unpaused as soon as the mix parameter is > 0.0
-
-NOTE:: might click with reverb and delay effect modules::
 
 METHOD:: ar
 subclassResponsibility
@@ -46,7 +43,8 @@ METHOD:: gui
 SUBSECTION:: Generated methods
 
 DEFINITIONLIST::
-## .pause || LINK::Classes/Boolean::. Get or set pause (uses LINK::Classes/Node#-run:: under the hood so might click).
+## .pause || LINK::Classes/Boolean::. Get or set the running state (see LINK::Classes/Node#-run::). Can be used for saving CPU. Modules are then automatically unpaused as soon as the mix parameter is > 0.0
+NOTE:: might click with reverb and delay effect modules.::
 ## ...Mix || LINK::Classes/Float::. Get or set the dry/wet mix 0.0 - 1.0. Exact method name will depend on class name. E.g. CODE::.pch2Mix::
 ## ...ParameterName || Get or set effect parameters. Exact method names are defined in the CODE::*specs:: class method. E.g. CODE::.pch2Ratio::
 ::

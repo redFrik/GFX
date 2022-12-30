@@ -10,19 +10,18 @@ AbstractGFX {
 	var <def;
 	var <synth;
 	var <numChannels;
+	var <target;
 
-	*new {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
-		^this.new2.initGFX_Module(target, bus, lags, numChannels, addAction, args, false)
+	*new {|target, numChannels|
+		^super.new.initAbstractGFX(target, numChannels)
 	}
 
-	*new2 {
-		^super.new.initAbstractGFX
-	}
-
-	initAbstractGFX {
+	initAbstractGFX {|argTarget, argNumChannels|
 		specs= [];
 		cvs= ();
 		lookup= IdentityDictionary[];
+		numChannels= argNumChannels;
+		target= argTarget;
 	}
 
 	//--synth
