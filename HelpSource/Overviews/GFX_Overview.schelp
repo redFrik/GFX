@@ -5,9 +5,9 @@ RELATED:: Classes/GFX_Module, Classes/GFX_Rack
 
 DESCRIPTION::
 
-Green effects module system with optional GUI.
+Green effects module system with optional GUI. Modules automatically adapt to any number of channels.
 
-Based on redModule in the redSys quark ( https://github.com/redFrik/redSys )
+Based on the older redModule in the redSys quark ( https://github.com/redFrik/redSys )
 
 Provides SynthDef+Synth construction, pseudo UGen support, code<->GUI linkage and automatic GUI generation with minimal code (see Modules folder - basically just an CODE::*ar:: method and some specs - see LINK::Classes/GFX_Module#Writing custom modules::).
 
@@ -96,7 +96,8 @@ r.freqShift= 10;
 //--optional gui
 r.gui;
 r.gui(version:1);
-
 r.free;
+
+GFX_Rack(GFX_Module.subclasses).gui;
 a.free;
 ::

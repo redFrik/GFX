@@ -58,7 +58,8 @@ GFX_RackGUI : AbstractGFXGUI {
 		//--scrolling canvas
 		canvas= View().background_(skin.foreground).layout_(
 			VLayout().margins_(skin.margin.asArray).spacing_(skin.spacing)
-		);
+		)
+		.keyDownAction_({true});  //block arrow keys scrolling
 
 		efx.efxs.do{|x, i|
 			var mod= GFX_ModuleGUI(x, version: version);
@@ -81,7 +82,5 @@ GFX_RackGUI : AbstractGFXGUI {
 			viewWidth+(skin.margin.x*2)+(skin.spacing*2),
 			viewHeight+(skin.margin.y*2)
 		);
-
-		canvas.keyDownAction_({true});  //block arrow keys scrolling
 	}
 }
