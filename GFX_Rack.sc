@@ -16,6 +16,7 @@ GFX_Rack : AbstractGFX {
 	}
 
 	initGFX_Rack {|argEfxs, bus, lags, action|
+		var reorder= false;
 
 		efxs= argEfxs.asArray;
 		if(efxs.isEmpty, {
@@ -32,17 +33,30 @@ GFX_Rack : AbstractGFX {
 
 		efxs= efxs.collect{|x|
 			if(x.isKindOf(GFX_Module), {
+				reorder= true;
 				if(x.numChannels!=numChannels, {
 					"%: module % wrong numChannels".format(this.class.name, x.class.name).warn;
 				});
-				x.bus= bus;
-				x.lags= lags;
-				x.synth.moveToTail(group);
+				target.server.makeBundle(target.server.latency?0.05*2, {
+					x.bus= bus;
+					x.lags= lags;
+				});
 			}, {
 				x= x.new(group, bus, lags, numChannels, \addToTail);
 			});
 			x
 		};
+		if(reorder, {
+			target.server.makeBundle(target.server.latency?0.05*2, {
+				efxs.do{|x, i|
+					if(i==0, {
+						x.synth.moveToHead(group);
+					}, {
+						x.synth.moveAfter(efxs[i-1].synth);
+					});
+				};
+			});
+		});
 
 		//--hijack all modules cvs, specs and lookup
 		efxs.do{|x|
