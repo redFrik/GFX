@@ -74,11 +74,48 @@ AbstractGFX {
 
 	//--introspection and helper methods
 
+	postActive {  //just post active modules (mix > 0)
+		"%: active modules:".format(this.class.name).postln;
+		this.active.do{|x| "\t%: %".format(x.key, x.value).postln};
+	}
+
+	postDiff {  //just post what differ from defaults
+		"%: parameters that differ:".format(this.class.name).postln;
+		cvs.keysValuesDo{|k, v|
+			var spec;
+			if(k==\pause, {
+				if(v.value, {
+					"\t%: % (default false)".format(k, v.value).postln;
+				});
+			}, {
+				spec= this.specForKey(k);
+				if(spec.default!=v.value, {
+					"\t%: % (default %)".format(k, v.value, spec.default).postln;
+				});
+			});
+		}
+	}
+
 	active {  //return any mix > 0
 		var res= [];
 		this.mixKeys.do{|k|
 			var v= cvs[k].value;
 			if(v>0, {res= res++(k -> v)});
+		};
+		^res
+	}
+
+	diff {  //return values that differ from spec default
+		var res= [];
+		var defaults= this.defaults;
+		this.values.pairsDo{|k, v|
+			defaults.pairsDo{|kk, vv|
+				if(kk==k, {
+					if(vv!=v, {
+						res= res++k++v;
+					});
+				});
+			};
 		};
 		^res
 	}

@@ -128,23 +128,6 @@ GFX_Rack : AbstractGFX {
 		synth.set(\vol, val);
 	}
 
-	//--introspection and helper methods
-
-	diff {  //just post what differ from defaults
-		"%: parameters that differ:".format(this.class.name).postln;
-		cvs.keysValuesDo{|k, v|
-			var spec= this.specForKey(k);
-			if(spec.default!=v.value, {
-				"\t%: % (default %)".format(k, v.value, spec.default).postln;
-			});
-		}
-	}
-
-	which {  //just post active modules (mix > 0)
-		"%: active modules:".format(this.class.name).postln;
-		this.active.do{|x| "\t%: %".format(x.key, x.value).postln};
-	}
-
 	//--private
 
 	prBuildDef {
