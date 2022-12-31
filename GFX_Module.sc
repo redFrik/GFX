@@ -104,6 +104,9 @@ GFX_Module : AbstractGFX {
 			{k==\pause} {
 				{|val|
 					if(synth.notNil, {
+						if(val, {
+							cvs[this.mixKeys[0]].value= 0;
+						});
 						target.server.makeBundle(target.server.latency, {
 							synth.run(val.not);
 						});
@@ -132,9 +135,13 @@ GFX_Module : AbstractGFX {
 		//--start synth
 		synth= Synth.basicNew(def.name, target.server);
 		def.doSend(target.server, synth.newMsg(target, synthArgs.asKeyValuePairs, addAction));
-		if(this.pause, {
-			target.server.makeBundle(target.server.latency, {synth.run(false)});
+
+		if(this.pause, {  //can be true when pause set in args
+			target.server.makeBundle(target.server.latency, {
+				synth.run(false);
+			});
 		});
+
 		synth.onFree({synth= nil; this.free});
 	}
 
