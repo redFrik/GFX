@@ -27,15 +27,23 @@ subclassResponsibility
 METHOD:: specs
 subclassResponsibility
 
+
 INSTANCEMETHODS::
 
 PRIVATE:: initGFX_Module, prBuildDef
 
+METHOD:: prefix
+A lowercase LINK::Classes/String:: derived from the effect's class name (with CODE::GFX_:: removed). Mainly used internally for parameter names.
+
+
+SUBSECTION:: Synth
+
 METHOD:: lags
 
-METHOD:: prefix
-
 METHOD:: free
+
+
+SUBSECTION:: Convenience methods
 
 METHOD:: gui
 

@@ -96,10 +96,6 @@ GFX_Rack : AbstractGFX {
 		{action.value(this)}.defer;
 	}
 
-	gui {|position, version= 0|
-		^GFX_RackGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
-	}
-
 	//--synth
 
 	bus_ {|val|
@@ -126,6 +122,12 @@ GFX_Rack : AbstractGFX {
 
 	vol_ {|val|
 		synth.set(\vol, val);
+	}
+
+	//--convenience
+
+	gui {|position, version= 0|
+		^GFX_RackGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
 	}
 
 	//--private

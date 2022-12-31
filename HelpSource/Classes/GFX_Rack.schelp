@@ -5,6 +5,7 @@ related:: Classes/GFX_RackGUI, Classes/GFX_Module, Classes/GFX_ModuleGUI
 
 
 DESCRIPTION::
+A stack of effect modules connected to a bus playing in order on a target.
 
 
 CLASSMETHODS::
@@ -14,7 +15,7 @@ METHOD:: new
 ARGUMENT:: efxs
 An LINK::Classes/Array:: with LINK::Classes/GFX_Module:: STRONG::classes:: or STRONG::instances:: to be put into the rack. If not specified a default set of modules will be used. CODE::[GFXComb, GFXFreq, GFXRvrs, GFXTank, GFXTanh, GFXZzzz]::
 NOTE::
-Order is important - determines signal flow.
+Order is important - determines signal flow - top to bottom.
 ::
 CODE::
 //simple example with 4 effects (stereo)
@@ -54,10 +55,8 @@ An LINK::Classes/Array:: with current LINK::Classes/GFX_Module:: STRONG::instanc
 METHOD:: group
 The LINK::Classes/Group:: that the rack is using. If target wasn't specified when the rack was created this will be CODE::Server.default.defaultGroup::.
 
-METHOD:: outbus
-Which audio bus to use as output for the rack. By default this will be the same as bus in LINK::#*new:: above. Set this to route audio elsewhere. Note that several consecutive busses might be used - depends on numChannels argument.
 
-METHOD:: vol
+SUBSECTION:: Synth
 
 METHOD:: bus
 
@@ -65,8 +64,16 @@ METHOD:: free
 
 METHOD:: lags
 
+METHOD:: outbus
+Which audio bus to use as output for the rack. By default this will be the same as bus in LINK::#*new:: above. Set this to route audio elsewhere. Note that several consecutive busses might be used - depends on numChannels argument.
+
 METHOD:: pause
 Call pause on all effect modules.
+
+METHOD:: vol
+
+
+SUBSECTION:: Convenience methods
 
 METHOD:: gui
 Create a LINK::Classes/GFX_RackGUI::.

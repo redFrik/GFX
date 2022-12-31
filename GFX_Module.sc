@@ -145,9 +145,9 @@ GFX_Module : AbstractGFX {
 		synth.onFree({synth= nil; this.free});
 	}
 
-	gui {|position, version= 0|
-		^GFX_ModuleGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
-	}
+	*ar {^this.subclassResponsibility(thisMethod)}
+
+	*specs {^this.subclassResponsibility(thisMethod)}
 
 	//--synth
 
@@ -160,11 +160,11 @@ GFX_Module : AbstractGFX {
 		synth.set(\lags, val);
 	}
 
-	//--required methods
+	//--convenience
 
-	*ar {^this.subclassResponsibility(thisMethod)}
-
-	*specs {^this.subclassResponsibility(thisMethod)}
+	gui {|position, version= 0|
+		^GFX_ModuleGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
+	}
 
 	//--private
 

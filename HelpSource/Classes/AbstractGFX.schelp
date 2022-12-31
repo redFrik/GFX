@@ -45,11 +45,17 @@ Set when created. By default this is 2 (stereo).
 METHOD:: target
 If not set CODE::Server.default.defaultGroup:: will be used.
 
+
+SUBSECTION:: Synth
+
 METHOD:: bus
 Get or set the audio bus (in and out).
 
 METHOD:: free
 Free the internal synth.
+
+
+SUBSECTION:: Normalized access
 
 METHOD:: get
 Get the normalised value for some parameter key.
@@ -84,33 +90,55 @@ A LINK::Classes/Float:: specifying a range (+/-).
 RETURNS::
 LINK::Classes/True:: if current widget value was updated, LINK::Classes/False:: if not (out of range).
 
+
+SUBSECTION:: Introspection
+
 METHOD:: active
 If mix > 0.0 i.e. the effect is doing something to the sound.
 
-RETURNS:: a LINK::Classes/Boolean::.
+RETURNS:: An LINK::Classes/Array:: with key value associations.
+
+METHOD:: defaults
+Spec defaults of all parameters. Unordered.
+
+RETURNS:: An LINK::Classes/Array:: with key value pairs.
+
+METHOD:: diff
+Values that differ from spec defaults.
+
+RETURNS:: An LINK::Classes/Array:: with key value pairs.
 
 METHOD:: mixKeys
-An LINK::Classes/Array:: of symbols representing mix parameter keys. Unordered.
+Symbols representing mix parameter keys. Unordered.
+
+RETURNS:: An LINK::Classes/Array:: with key symbols.
+
+METHOD:: postActive
+Just post active modules (mix > 0.0). Similar to LINK::#-active::.
+
+METHOD:: postDiff
+Just post parameters that differ from spec defaults. Similar to LINK::#-diff::.
 
 METHOD:: specForKey
-Convenience method for looking up a parameter's LINK::Classes/ControlSpec::.
+Method for looking up a parameter's LINK::Classes/ControlSpec::.
 
 CODE::
 g.specForKey(\freqMix);
 -> a ControlSpec(0, 1, 'linear', 0, 0, "")
 ::
 
-METHOD:: defaults
-An LINK::Classes/Array:: of key value pairs representing the spec defaults of all parameters. Unordered.
+RETURNS:: a LINK::Classes/ControlSpec:: if key found - else nil.
 
 METHOD:: values
-An LINK::Classes/Array:: of key value pairs representing the current settings of all parameters. Unordered.
+Current settings of all parameters. Unordered.
+
+RETURNS:: An LINK::Classes/Array:: with key value pairs.
+
+
+SUBSECTION:: Convenience methods
 
 METHOD:: bypass
-Convenience method for setting all mix to 0.0
-
-METHOD:: restoreDefaults
-Set all values to defaults.
+Method for setting all mix to 0.0
 
 METHOD:: gui
 Generate a GUI.
@@ -122,3 +150,9 @@ ARGUMENT:: version
 GUI style / variant.
 
 RETURNS:: an instance of one of the LINK::Classes/AbstractGFXGUI:: subclasses.
+
+METHOD:: restoreDefaults
+Set all values to defaults.
+
+ARGUMENT:: skipMix
+If LINK::Classes/True:: then ignore and do not reset mix parameters.

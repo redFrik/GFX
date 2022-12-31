@@ -72,7 +72,39 @@ AbstractGFX {
 		^false
 	}
 
-	//--introspection and helper methods
+	//--introspection
+
+	active {  //return any mix > 0
+		var res= [];
+		this.mixKeys.do{|k|
+			var v= cvs[k].value;
+			if(v>0, {res= res++(k -> v)});
+		};
+		^res
+	}
+
+	defaults {  //return spec default values
+		^specs.collect{|assoc| [assoc.key, assoc.value.default]}.flat
+	}
+
+	diff {  //return values that differ from spec default
+		var res= [];
+		var defaults= this.defaults;
+		this.values.pairsDo{|k, v|
+			defaults.pairsDo{|kk, vv|
+				if(kk==k, {
+					if(vv!=v, {
+						res= res++k++v;
+					});
+				});
+			};
+		};
+		^res
+	}
+
+	mixKeys {  //return mix key(s)
+		^lookup.select{|v, k| v==\mix}.keys.asArray
+	}
 
 	postActive {  //just post active modules (mix > 0)
 		"%: active modules:".format(this.class.name).postln;
@@ -96,49 +128,21 @@ AbstractGFX {
 		}
 	}
 
-	active {  //return any mix > 0
-		var res= [];
-		this.mixKeys.do{|k|
-			var v= cvs[k].value;
-			if(v>0, {res= res++(k -> v)});
-		};
-		^res
-	}
-
-	diff {  //return values that differ from spec default
-		var res= [];
-		var defaults= this.defaults;
-		this.values.pairsDo{|k, v|
-			defaults.pairsDo{|kk, vv|
-				if(kk==k, {
-					if(vv!=v, {
-						res= res++k++v;
-					});
-				});
-			};
-		};
-		^res
-	}
-
-	mixKeys {  //return mix key(s)
-		^lookup.select{|v, k| v==\mix}.keys.asArray
-	}
-
 	specForKey {|key|  //return ControlSpec
 		^specs.detect{|assoc| key==assoc.key}.value
-	}
-
-	defaults {  //return spec default values
-		^specs.collect{|assoc| [assoc.key, assoc.value.default]}.flat
 	}
 
 	values {  //return current ref values
 		^specs.collect{|assoc| [assoc.key, cvs[assoc.key].value]}.flat
 	}
 
+	//--convenience
+
 	bypass {  //turn off active (set mix key(s) to 0)
 		this.active.do{|assoc| cvs[assoc.key].value_(0).changed(\value)};
 	}
+
+	gui {|position, version= 0| ^this.subclassResponsibility(thisMethod)}
 
 	restoreDefaults {|skipMix= false|
 		cvs.keysValuesDo{|k, v|
@@ -147,12 +151,6 @@ AbstractGFX {
 			});
 		};
 	}
-
-	//--required methods
-
-	gui {|position, version= 0| ^this.subclassResponsibility(thisMethod)}
-
-	prBuildDef {^this.subclassResponsibility(thisMethod)}
 
 	//--private
 
@@ -165,4 +163,6 @@ AbstractGFX {
 		this.addUniqueMethod(key.asSetter, func);
 		this.addUniqueMethod(key, {|obj| ref.value});
 	}
+
+	prBuildDef {^this.subclassResponsibility(thisMethod)}
 }
