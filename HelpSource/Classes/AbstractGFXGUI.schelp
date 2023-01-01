@@ -29,7 +29,7 @@ An LINK::Classes/Integer:: defining style.
 
 INSTANCEMETHODS::
 
-PRIVATE:: initAbstractGFXGUI
+PRIVATE:: initAbstractGFXGUI, prInit
 
 METHOD:: efx
 The LINK::Classes/GFX_Module:: or LINK::Classes/GFX_Rack:: instance that is connected to this GUI.

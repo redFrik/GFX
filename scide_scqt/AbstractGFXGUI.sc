@@ -18,4 +18,8 @@ AbstractGFXGUI : SCViewHolder {
 		view.front;
 		CmdPeriod.doOnce({view.close});
 	}
+
+	//--private
+
+	prInit {^this.subclassResponsibility(thisMethod)}
 }
