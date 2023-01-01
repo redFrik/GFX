@@ -75,6 +75,14 @@ METHOD:: vol
 
 SUBSECTION:: Convenience methods
 
+METHOD:: code
+Code for reproducing the current rack and its modules.
+NOTE::
+target, lags and action are missing.
+::
+
+RETURNS:: a LINK::Classes/String::
+
 METHOD:: gui
 Create a LINK::Classes/GFX_RackGUI::.
 

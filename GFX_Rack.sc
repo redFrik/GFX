@@ -126,6 +126,20 @@ GFX_Rack : AbstractGFX {
 
 	//--convenience
 
+	code {  //does not include target, lags, action
+		var str= "GFX_Rack([";
+		efxs.do{|efx| str= str++"\n\t%,".format(efx.code)};
+		str= str++"\n]";
+		if(outbus!=0, {
+			str= str++", bus: %".format(outbus);
+		});
+		if(numChannels!=2, {
+			str= str++", numChannels: %".format(numChannels);
+		});
+		str= str++");";
+		^str
+	}
+
 	gui {|position, version= 0|
 		^GFX_RackGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
 	}

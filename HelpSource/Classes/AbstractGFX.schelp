@@ -51,6 +51,8 @@ SUBSECTION:: Synth
 METHOD:: bus
 Get or set the audio bus (in and out).
 
+METHOD:: lags
+
 METHOD:: free
 Free the internal synth.
 
@@ -139,6 +141,14 @@ SUBSECTION:: Convenience methods
 
 METHOD:: bypass
 Method for setting all mix to 0.0
+
+METHOD:: code
+Code for reproducing the current setup.
+NOTE::
+Things like target and lags settings are missing.
+::
+
+RETURNS:: a LINK::Classes/String::
 
 METHOD:: gui
 Generate a GUI.

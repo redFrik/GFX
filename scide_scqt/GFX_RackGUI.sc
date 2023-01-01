@@ -22,6 +22,7 @@ GFX_RackGUI : AbstractGFXGUI {
 			"vary some" -> {efx.cvs.keysDo{|k| if(0.2.coin, {efx.set(k, efx.get(k)+0.gauss(0.05))})}},
 			"vary many" -> {efx.cvs.keysDo{|k| if(0.5.coin, {efx.set(k, efx.get(k)+0.gauss(0.05))})}},
 			"surprise" -> {efx.efxs.do{|x| x.set(x.cvs.keys.choose, #[0, 0.5, 1].choose)}},
+			"post code" -> {efx.code.postln},
 			"save preset" -> {Dialog.savePanel{|x| efx.values.writeArchive(x)}},
 			"load preset" -> {Dialog.openPanel{|x|
 				Object.readArchive(x).pairsDo{|k, v| efx.cvs[k].value_(v).changed(\value)}

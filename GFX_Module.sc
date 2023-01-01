@@ -162,6 +162,24 @@ GFX_Module : AbstractGFX {
 
 	//--convenience
 
+	code {  //does not include target, bus, lags, addAction
+		var str= "";
+		this.values.pairsDo{|k, v|
+			if(str.size>0, {str= str++", "});
+			str= str++"%: %".format(k, v)
+		};
+		if(str.size>0, {str= "args: [%]".format(str)});
+		if(numChannels!=2, {
+			if(str.size>0, {str= ", "++str});
+			str= "numChannels: %%".format(numChannels, str);
+		});
+		str= "%(%)".format(this.class.name, str);
+		if(this.pause, {
+			str= str++".pause_(true)";
+		});
+		^str
+	}
+
 	gui {|position, version= 0|
 		^GFX_ModuleGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
 	}

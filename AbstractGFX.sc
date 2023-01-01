@@ -34,6 +34,8 @@ AbstractGFX {
 		synth.free;
 	}
 
+	lags_ {|val| ^this.subclassResponsibility(thisMethod)}
+
 	//--normalized access
 
 	get {|key|  //return normalized value or nil
@@ -141,6 +143,8 @@ AbstractGFX {
 	bypass {  //turn off active (set mix key(s) to 0)
 		this.active.do{|assoc| cvs[assoc.key].value_(0).changed(\value)};
 	}
+
+	code {^this.subclassResponsibility(thisMethod)}
 
 	gui {|position, version= 0| ^this.subclassResponsibility(thisMethod)}
 
