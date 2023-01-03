@@ -193,7 +193,7 @@ GFX_Module : AbstractGFX {
 			specs.do{|assoc, i|
 				var name= lookup[assoc.key];
 				var c= NamedControl.kr(name, nil, lags.asArray[i], false, assoc.value);
-				if(i==0, {mix= c}, {args.add(c)});
+				if(i==0, {mix= c}, {args.add(c.max(-1.7e38))});
 			};
 			XOut.ar(bus, mix, this.class.ar(In.ar(bus, numChannels), *args));
 		})
