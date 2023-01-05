@@ -119,10 +119,12 @@ GFXFreq : GFX_Module {
 
 See the classes in the folder Modules for more examples.
 
-A properly written a custom class can be used like any other module - including being added to a LINK::Classes/GFX_Rack::, as a LINK::Classes/SynthDef:: variant (with optional GUI) or as a pseudo LINK::Classes/UGen:: variant...
+A properly written class can be used like any other module - including being added to a LINK::Classes/GFX_Rack::, as a LINK::Classes/SynthDef:: variant (with optional GUI) or as a pseudo LINK::Classes/UGen:: variant...
 
 CODE::
 GFXFreq().gui;  //SynthDef variant with gui
 
 {GFXFreq.ar(SinOsc.ar)}.play;  //pseudo UGen variant
 ::
+
+A special feature is that when used in a rack, a module will be sent the parameter 'CODE::feedback::'. This is the index of an internal audio bus that is tapped from the rack output pre volume fader. See the GFXAaaa module for an example.

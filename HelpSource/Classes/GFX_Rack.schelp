@@ -13,7 +13,7 @@ CLASSMETHODS::
 METHOD:: new
 
 ARGUMENT:: efxs
-An LINK::Classes/Array:: with LINK::Classes/GFX_Module:: STRONG::classes:: or STRONG::instances:: to be put into the rack. If not specified a default set of modules will be used. CODE::[GFXComb, GFXFreq, GFXRvrs, GFXTank, GFXTanh, GFXZzzz]::
+An LINK::Classes/Array:: with LINK::Classes/GFX_Module:: STRONG::classes:: or STRONG::instances:: to be put into the rack. If not specified a default set of modules will be used. CODE::[GFXAaaa, GFXComb, GFXFreq, GFXRvrs, GFXTank, GFXTanh, GFXZzzz]::
 NOTE::
 Order is important - determines signal flow - top to bottom.
 ::

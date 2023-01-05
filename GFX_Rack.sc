@@ -4,7 +4,8 @@ GFX_Rack : AbstractGFX {
 
 	var <efxs;  //Array of GFX_Module instances
 	var <group;  //internal Group
-	var <outbus;  //will initially be set to same as bus argument
+	var <outbus;  //Integer. will initially be set to same as bus argument
+	var feedback;  //internal audio Bus
 
 	*new {|efxs, target, bus= 0, lags= 0.1, numChannels= 2, action|
 		var trg= target.asTarget;
@@ -20,7 +21,7 @@ GFX_Rack : AbstractGFX {
 
 		efxs= argEfxs.asArray;
 		if(efxs.isEmpty, {
-			efxs= [GFXComb, GFXFreq, GFXRvrs, GFXTank, GFXTanh, GFXZzzz];
+			efxs= [GFXAaaa, GFXComb, GFXFreq, GFXRvrs, GFXTank, GFXTanh, GFXZzzz];
 			"%: no efxs given - using default classes: %".format(
 				this.class.name,
 				efxs.collect{|x| x.name}
@@ -28,7 +29,7 @@ GFX_Rack : AbstractGFX {
 		});
 
 		outbus= bus;
-
+		feedback= Bus.audio(target.server, numChannels);
 		group= Group.tail(target);
 
 		efxs= efxs.collect{|x|
@@ -93,6 +94,10 @@ GFX_Rack : AbstractGFX {
 		def.doSend(target.server, synth.newMsg(group, [\bus, bus], \addToTail));
 		synth.onFree({synth= nil; this.free});
 
+		target.server.makeBundle(target.server.latency, {
+			group.set(\feedback, feedback);
+		});
+
 		{action.value(this)}.defer;
 	}
 
@@ -106,6 +111,9 @@ GFX_Rack : AbstractGFX {
 	free {
 		super.free;
 		group.free;
+		group= nil;
+		feedback.free;
+		feedback= nil;
 	}
 
 	lags_ {|val|
@@ -152,6 +160,7 @@ GFX_Rack : AbstractGFX {
 			var in= In.ar(bus, numChannels);
 			in= Sanitize.ar(in);
 			in= LeakDC.ar(in);
+			Out.ar(feedback, in);
 			in= in*\vol.kr(0, 0.05, spec: ControlSpec(-inf, 12, 'db', units: " dB")).dbamp;
 			ReplaceOut.ar(bus, in);
 			Out.ar(out, in*BinaryOpUGen('!=', out, bus));  //send if different outbus and bus
