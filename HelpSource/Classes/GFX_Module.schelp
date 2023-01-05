@@ -59,7 +59,7 @@ METHOD:: gui
 SUBSECTION:: Generated methods
 
 DEFINITIONLIST::
-## .pause || LINK::Classes/Boolean::. Get or set the running state (see LINK::Classes/Node#-run::). Can be used for saving CPU. Modules are then automatically unpaused as soon as the mix parameter is > 0.0
+## .pause || LINK::Classes/Boolean::. Get or set the running state (see LINK::Classes/Node#-run::). Can be used for saving CPU. Modules are then automatically unpaused as soon as the mix parameter is > 0.0. It is also possible to double-click the horizontal label in the GUI to pause and unpause a module.
 NOTE:: might click with reverb and delay effect modules.::
 ## ...Mix || LINK::Classes/Float::. Get or set the dry/wet mix 0.0 - 1.0. Exact method name will depend on class name. E.g. CODE::.pch2Mix::
 ## ...ParameterName || Get or set effect parameters. Exact method names are defined in the CODE::*specs:: class method. E.g. CODE::.pch2Ratio::

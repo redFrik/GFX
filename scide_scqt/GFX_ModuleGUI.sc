@@ -16,6 +16,9 @@ GFX_ModuleGUI : AbstractGFXGUI {
 			label.stringColor_(if(ref.value, {skin.foreground}, {skin.fontColor}));
 		});
 		hl.add(label, 1, \right);
+		label.mouseDownAction_({|v, x, y, mod, num, cnt|
+			if(cnt==2, {efx.pause_(efx.pause.not)});
+		});
 
 		Routine({
 			efx.target.server.sync;
@@ -40,7 +43,7 @@ GFX_ModuleGUI : AbstractGFXGUI {
 
 			}, {
 
-				//--knob, numberbox and label
+				//--knob, numberbox and parameter name
 				vl= VLayout().spacing_(1);
 
 				knob= GUICVKnob(nil, nil, ref, spec, update: false);
