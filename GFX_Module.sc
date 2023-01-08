@@ -92,6 +92,7 @@ GFX_Module : AbstractGFX {
 			var lastVal;
 			var name= lookup[k];  //e.g. bitcRate -> rate
 			var spec= this.specForKey(k);
+
 			var updateFunc= case
 			{name==\mix} {
 				{|val|
@@ -118,10 +119,10 @@ GFX_Module : AbstractGFX {
 			};
 
 			controllers.add(
-				SimpleController(v).put(\value, {|ref|
-					if(ref.value!=lastVal, {
-						updateFunc.value(ref.value);
-						lastVal= ref.value;
+				CV(v, spec).addAction({|cv, val|
+					if(val!=lastVal, {
+						updateFunc.value(val);
+						lastVal= val;
 					});
 				})
 			);

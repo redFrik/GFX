@@ -12,8 +12,8 @@ GFX_ModuleGUI : AbstractGFXGUI {
 		);
 
 		label= GUICV.staticText.string_(efx.prefix.join(Char.nl));
-		controller= SimpleController(efx.cvs[\pause]).put(\value, {|ref|
-			label.stringColor_(if(ref.value, {skin.foreground}, {skin.fontColor}));
+		controller= CV(efx.cvs[\pause]).addAction({|cv, val|
+			label.stringColor_(if(val, {skin.foreground}, {skin.fontColor}));
 		});
 		hl.add(label, 1, \right);
 		label.mouseDownAction_({|v, x, y, mod, num, cnt|
