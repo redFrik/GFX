@@ -3,7 +3,7 @@
 	summary: "Green effects module system with optional GUI",
 	author: "Fredrik Olofsson",
 	since: "2022",
-	version: "0.2.2",
+	version: "0.2.3",
 	license: "GPL",
 	dependencies: ["https://github.com/redFrik/GUICV"],
 	isCompatible: {Main.versionAtLeast(3, 9)},

@@ -38,7 +38,8 @@ GFX_ModuleGUI : AbstractGFXGUI {
 
 			//--mix slider
 			if(efx.mixKeys.includes(assoc.key), {
-				slider= GUICVSliderLabel(nil, nil, ref, spec, (string: assoc.key), false);
+				slider= GUICVSliderLabel(nil, nil, ref, spec, false)
+				.string_(assoc.key);
 				hl.add(slider);
 
 			}, {
@@ -46,9 +47,9 @@ GFX_ModuleGUI : AbstractGFXGUI {
 				//--knob, numberbox and parameter name
 				vl= VLayout().spacing_(1);
 
-				knob= GUICVKnob(nil, nil, ref, spec, update: false);
+				knob= GUICVKnob(nil, nil, ref, spec, false);
 
-				number= GUICVNumberBox(nil, nil, ref, spec, update: false)
+				number= GUICVNumberBox(nil, nil, ref, spec, false)
 				.fixedSize_(Size(skin.knobWidth, skin.buttonHeight));
 
 				text= GUICV.staticText.string_(assoc.key);
@@ -69,12 +70,13 @@ GFX_ModuleGUI : AbstractGFXGUI {
 			var spec= assoc.value;
 			var slider, number;
 
-			slider= GUICVSliderLabel(nil, nil, ref, spec, (string: assoc.key))
+			slider= GUICVSliderLabel(nil, nil, ref, spec, false)
 			.fixedHeight_(skin.buttonHeight)
 			.minWidth_(skin.knobWidth*2)
-			.orientation_(\horizontal);
+			.orientation_(\horizontal)
+			.string_(assoc.key);
 
-			number= GUICVNumberBox(nil, nil, ref, spec)
+			number= GUICVNumberBox(nil, nil, ref, spec, false)
 			.fixedHeight_(skin.buttonHeight)
 			.minWidth_(skin.knobWidth);
 
