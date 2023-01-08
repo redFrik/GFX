@@ -67,7 +67,7 @@ g.numChannels;
 g.gui;
 g.gui(version:1);
 
-g.restoreDefault;
+g.restoreDefaults;
 g.free;
 a.free;
 ::
@@ -97,6 +97,7 @@ r.freqShift= 10;
 r.gui;
 r.gui(version:1);
 r.free;
+
 
 GFX_Rack(GFX_Module.subclasses).gui;
 a.free;
