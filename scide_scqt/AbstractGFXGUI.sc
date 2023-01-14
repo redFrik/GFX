@@ -7,6 +7,10 @@ AbstractGFXGUI : SCViewHolder {
 	var <efx;  //a GFX_Module or a GFX_Rack
 
 	*new {|efx, parent, bounds, version= 0|
+		if(efx.isKindOf(AbstractGFX).not, {
+			"efx argument % not a proper module or rack".format(efx).warn;
+			^nil
+		});
 		^super.new.initAbstractGFXGUI(efx, parent, bounds, version)
 	}
 

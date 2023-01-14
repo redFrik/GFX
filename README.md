@@ -20,7 +20,8 @@ b.pch2Ratio= 2;
 
 c= b.gui;  //optional GUI. Notice the code<->gui linkage
 
-r= GFX_Rack(GFX_Module.subclasses, action:{|r| t= r.gui});
+r= GFX_Rack();
+t= r.gui;
 
 c.close; b.free; a.free; r.free; t.close;
 ```

@@ -2,8 +2,8 @@
 
 GFX_Module : AbstractGFX {
 
-	var <prefix;
-	var controllers;
+	var <order;  //Array with symbols
+	var <prefix;  //String
 
 	*new {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
 		var trg= target.asTarget;
@@ -20,25 +20,30 @@ GFX_Module : AbstractGFX {
 
 	initGFX_Module {|bus, lags, addAction, args|
 		var arArgs, synthArgs;
+		var controllers;
+		var mixKey;
 
 		prefix= this.class.asString.replace("GFX").toLower;
 
-		//--all modules automatically get a mix and a pause
-		specs= specs++((prefix++"Mix").asSymbol -> ControlSpec(0, 1, 'lin', 0, 0));
-		cvs.put(specs[0].key, Ref(0));
-		lookup.put(specs[0].key, \mix);
-		cvs.put(\pause, Ref(false));
+		//--all modules automatically get a mix CV and a pause CV
+		mixKey= (prefix++"Mix").asSymbol;
+		cvs.put(mixKey, CV(Ref(0)));
+		lookup.put(mixKey, \mix);
+		cvs.put(\pause, CV(Ref(false)));
 
-		//--add *ar arguments and defaults in order to specs and cvs
+		//--use *ar arguments and defaults to create CVs
 		arArgs= this.class.class.findMethod(\ar).keyValuePairsFromArgs;
 		if(arArgs[0]==\in, {
 			arArgs= arArgs.drop(2);
 		}, {
 			"%: first *ar argument is not 'in'".format(this.class.name).warn;
 		});
+
+		order= [mixKey];  //parameter order from *ar args - mainly for GUI
+
 		arArgs.pairsDo{|k, v|
 			var found, kGuess;
-			if(k==\mix or:{k==\pause or:{k==\bus}}, {
+			if(#[\mix, \pause, \bus, \lags].includes(k), {
 				"%: ignoring reserved *ar argument '%'".format(this.class.name, k).warn;
 			}, {
 				found= false;
@@ -52,9 +57,10 @@ GFX_Module : AbstractGFX {
 							if(spec.default!=spec.minval and:{spec.default!=v}, {
 								"%: spec default value mismatch for '%'".format(this.class.name, k).warn;
 							});
-							specs= specs++(key -> spec.default_(v));
-							cvs.put(key, Ref(v));
+
+							cvs.put(key, CV(Ref(v), spec.default_(v)));
 							lookup.put(key, k);
+							order= order.add(key);
 						});
 					});
 				};
@@ -68,58 +74,56 @@ GFX_Module : AbstractGFX {
 		synthArgs= ().put(\bus, bus);
 		args.asArray.keysValuesDo{|k, v|  //add additional args passed in
 			if(k==\bus, {
-				if(synthArgs[\bus]!=v, {
-					"%: overriding 'bus' argument with args".format(this.class.name).warn;
+				if(bus!=v, {
+					"%: overriding bus argument with args".format(this.class.name).warn;
 				});
 				synthArgs.put(k, v);
 			}, {
 				if(cvs[k].notNil, {
-					if(k!=\pause, {
-						v= this.specForKey(k).constrain(v);
+					if(k==\pause, {
+						cvs[k].spec.default= v.binaryValue;  //update spec default
+					}, {
+						v= cvs[k].spec.constrain(v);
+						cvs[k].spec.default= v;  //update spec default
 						synthArgs.put(lookup[k], v);
-						this.specForKey(k).default= v;  //update spec default from args
 					});
-					cvs[k].value= v;  //override Ref value
+					cvs[k].value= v;  //override CV value
 				}, {
 					"%: argument '%' not found".format(this.class.name, k).warn;
 				});
 			});
 		};
 
-		//--set up controllers and methods from cvs
+		//--set up controllers and methods from CVs
 		controllers= List.new;
-		cvs.keysValuesDo{|k, v|
+		cvs.keysValuesDo{|k, cv|
 			var lastVal;
 			var name= lookup[k];  //e.g. bitcRate -> rate
-			var spec= this.specForKey(k);
 
 			var updateFunc= case
 			{name==\mix} {
 				{|val|
 					if(this.pause and:{val>0}, {
-						this.pause_(false);
+						this.pause_(false);  //unpause if mix > 0
 					});
 					synth.set(name, val);
 				}
 			}
 			{k==\pause} {
 				{|val|
-					if(synth.notNil, {
-						if(val, {
-							cvs[this.mixKeys[0]].value= 0;
-						});
-						target.server.makeBundle(target.server.latency, {
-							synth.run(val.not);
-						});
+					target.server.makeBundle(target.server.latency, {
+						synth.run(val.not);
 					});
 				}
 			}
 			{
-				{|val| synth.set(name, val)}
+				{|val|
+					synth.set(name, val);
+				}
 			};
 
 			controllers.add(
-				CV(v, spec).addAction({|cv, val|
+				cv.addAction({|cv, val|
 					if(val!=lastVal, {
 						updateFunc.value(val);
 						lastVal= val;
@@ -127,23 +131,26 @@ GFX_Module : AbstractGFX {
 				})
 			);
 
-			this.prAddMethod(k, v, spec);
+			this.prAddMethod(k, cv);
 		};
 
 		//--generate synthdef
-		def= this.prBuildDef(lags.dup(specs.size));
+		def= this.prBuildDef(lags.asArray);
 
 		//--start synth
 		synth= Synth.basicNew(def.name, target.server);
 		def.doSend(target.server, synth.newMsg(target, synthArgs.asKeyValuePairs, addAction));
 
-		if(this.pause, {  //can be true when pause set in args
+		if(this.pause, {  //true when pause set in args
 			target.server.makeBundle(target.server.latency, {
 				synth.run(false);
 			});
 		});
 
-		synth.onFree({synth= nil; this.free});
+		synth.onFree({
+			synth= nil;
+			controllers.do{|x| x.remove};
+		});
 	}
 
 	*ar {^this.subclassResponsibility(thisMethod)}
@@ -152,32 +159,26 @@ GFX_Module : AbstractGFX {
 
 	//--synth
 
-	free {
-		super.free;
-		controllers.do{|x| x.remove};
-	}
-
 	lags_ {|val|
 		synth.set(\lags, val);
 	}
 
 	//--convenience
 
-	code {  //does not include target, bus, lags, addAction
+	code {|verbose= false|
+		//does not include target, bus, lags, addAction
 		var str= "";
-		this.values.pairsDo{|k, v|
+		if(verbose, {this.values}, {this.diff}).pairsDo{|k, v|
 			if(str.size>0, {str= str++", "});
 			str= str++"%: %".format(k, v)
 		};
 		if(str.size>0, {str= "args: [%]".format(str)});
-		if(numChannels!=2, {
+		//TODO bus somehow?
+		if(verbose or:{numChannels!=2}, {
 			if(str.size>0, {str= ", "++str});
 			str= "numChannels: %%".format(numChannels, str);
 		});
 		str= "%(%)".format(this.class.name, str);
-		if(this.pause, {
-			str= str++".pause_(true)";
-		});
 		^str
 	}
 
@@ -185,18 +186,28 @@ GFX_Module : AbstractGFX {
 		^GFX_ModuleGUI(this, version:version).moveTo(*position.asRect.asArray.drop(2))
 	}
 
+	openCodeFile {this.class.openCodeFile}
+
+	*allSubclasses {
+		^subclasses.asList.sort{|a, b| a.name<=b.name}.asArray
+	}
+
 	//--private
 
-	prBuildDef {|argLags|
+	prBuildDef {|lags|
 		^SynthDef((this.class.asString++$_++numChannels).asSymbol, {|bus|
-			var lags= NamedControl.kr(\lags, argLags);
-			var mix, args= List.new;
-			specs.do{|assoc, i|
-				var name= lookup[assoc.key];
-				var c= NamedControl.kr(name, nil, lags.asArray[i], false, assoc.value);
-				if(i==0, {mix= c}, {args.add(c.max(-3.4e38))});
+			var l= NamedControl.kr(\lags, {|i| lags.wrapAt(i)}.dup(order.size));
+			var args= Array.newClear(order.size);
+			cvs.keysValuesDo{|k, cv, i|
+				var index, name, c;
+				if(k!=\pause, {
+					index= order.indexOf(k);
+					name= lookup[k];
+					c= NamedControl.kr(name, nil, l[index], false, cv.spec);
+					args.put(index, c.max(-3.4e38));
+				});
 			};
-			XOut.ar(bus, mix, this.class.ar(In.ar(bus, numChannels), *args));
+			XOut.ar(bus, args[0], this.class.ar(In.ar(bus, numChannels), *args[1..]));
 		})
 	}
 }

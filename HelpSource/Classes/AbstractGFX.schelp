@@ -7,7 +7,12 @@ related:: Classes/AbstractGFXGUI, Overviews/GFX_Overview
 DESCRIPTION::
 
 NOTE::
-This is an abstract class. Do not instantiate - use the subclasses
+This is an abstract class. Do not instantiate - use the subclasses.
+::
+
+CODE::
+s.boot;
+g= GFXPch2();
 ::
 
 
@@ -24,14 +29,23 @@ INSTANCEMETHODS::
 
 PRIVATE:: initAbstractGFX, prBuildDef, prAddMethod
 
-METHOD:: specs
-An array of parameter key -> LINK::Classes/ControlSpec:: associations.
-
 METHOD:: cvs
-A dictionary with parameter keys -> LINK::Classes/Ref:: associations.
+A dictionary with all parameter keys and LINK::Classes/CV:: values.
+
+CODE::
+g.cvs;  //-> ( 'pause': CVBoolean(false), 'pch2Ratio': CV(4), 'pch2Mix': CV(0) )
+::
 
 METHOD:: lookup
-A dictionary with parameter key -> CODE::*ar:: class method argument name associations. Mainly used inside of classes.
+A dictionary with parameter keys and CODE::*ar:: class method argument names as values. CODE::\pause:: is exluded.
+
+CODE::
+g.lookup;  //-> IdentityDictionary[ (pch2Ratio -> ratio), (pch2Mix -> mix) ]
+::
+
+NOTE::
+Semi-private and mainly for use inside of classes.
+::
 
 METHOD:: def
 The generated LINK::Classes/SynthDef::. The def's name will be the same as the name of the class suffixed with an underscore + number of channels.
@@ -102,6 +116,9 @@ RETURNS:: An LINK::Classes/Array:: with key value associations.
 
 METHOD:: defaults
 Spec defaults of all parameters. Unordered.
+CODE::
+g.defaults;  //-> [ pause, false, pch2Ratio, 4, pch2Mix, 0.0 ]
+::
 
 RETURNS:: An LINK::Classes/Array:: with key value pairs.
 
@@ -113,6 +130,11 @@ RETURNS:: An LINK::Classes/Array:: with key value pairs.
 METHOD:: mixKeys
 Symbols representing mix parameter keys. Unordered.
 
+CODE::
+g.mixKeys;  //-> [ pch2Mix ]
+//for GFX_Rack there will be many more symbols returned
+::
+
 RETURNS:: An LINK::Classes/Array:: with key symbols.
 
 METHOD:: postActive
@@ -121,18 +143,11 @@ Just post active modules (mix > 0.0). Similar to LINK::#-active::.
 METHOD:: postDiff
 Just post parameters that differ from spec defaults. Similar to LINK::#-diff::.
 
-METHOD:: specForKey
-Method for looking up a parameter's LINK::Classes/ControlSpec::.
-
-CODE::
-g.specForKey(\freqMix);
--> a ControlSpec(0, 1, 'linear', 0, 0, "")
-::
-
-RETURNS:: a LINK::Classes/ControlSpec:: if key found - else nil.
-
 METHOD:: values
 Current settings of all parameters. Unordered.
+CODE::
+g.values;  //-> [ pause, false, pch2Ratio, 4.0, pch2Mix, 0.0 ]
+::
 
 RETURNS:: An LINK::Classes/Array:: with key value pairs.
 
@@ -148,10 +163,13 @@ NOTE::
 Things like target and lags settings are missing.
 ::
 
+ARGUMENT:: verbose
+A flag indicating if all values should be included (true) or only the ones that have been changed and differ from the defaults (false).
+
 RETURNS:: a LINK::Classes/String::
 
 METHOD:: gui
-Generate a GUI.
+Shortcut for creating a GUI.
 
 ARGUMENT:: position
 A LINK::Classes/Point::.

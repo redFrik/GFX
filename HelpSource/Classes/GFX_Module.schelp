@@ -9,7 +9,7 @@ DESCRIPTION::
 NOTE::
 It is recommended to instantiate the effect subclasses directly. See LINK::#Basics:: below.
 CODE::
-GFX_Module.subclasses;
+GFX_Module.allSubclasses;
 ::
 ::
 
@@ -27,10 +27,16 @@ subclassResponsibility
 METHOD:: specs
 subclassResponsibility
 
+METHOD:: allSubclasses
+A sorted LINK::Classes/Array:: of all subclasses.
+
 
 INSTANCEMETHODS::
 
 PRIVATE:: initGFX_Module, prBuildDef
+
+METHOD:: order
+An LINK::Classes/Array:: with parameter names as symbols. Mainly used internally for generating the GUI. The order is taken from the *ar arguments.
 
 METHOD:: prefix
 A lowercase LINK::Classes/String:: derived from the effect's class name (with CODE::GFX_:: removed). Mainly used internally for parameter names.
@@ -40,29 +46,36 @@ SUBSECTION:: Synth
 
 METHOD:: lags
 
-METHOD:: free
-
 
 SUBSECTION:: Convenience methods
 
-METHOD:: code
-Code for reproducing the current module.
-NOTE::
-target, bus, lags and addAction are missing.
+METHOD:: openCodeFile
+Show the class definition.
+CODE::
+g= GFXPch2();
+g.openCodeFile;
 ::
-
-RETURNS:: a LINK::Classes/String::
-
-METHOD:: gui
 
 
 SUBSECTION:: Generated methods
 
 DEFINITIONLIST::
 ## .pause || LINK::Classes/Boolean::. Get or set the running state (see LINK::Classes/Node#-run::). Can be used for saving CPU. Modules are then automatically unpaused as soon as the mix parameter is > 0.0. It is also possible to double-click the horizontal label in the GUI to pause and unpause a module.
+CODE::
+g= GFXPch2();
+g.pause= true;
+::
 NOTE:: might click with reverb and delay effect modules.::
-## ...Mix || LINK::Classes/Float::. Get or set the dry/wet mix 0.0 - 1.0. Exact method name will depend on class name. E.g. CODE::.pch2Mix::
-## ...ParameterName || Get or set effect parameters. Exact method names are defined in the CODE::*specs:: class method. E.g. CODE::.pch2Ratio::
+## ...Mix || LINK::Classes/Float::. Get or set the dry/wet mix 0.0 - 1.0. Exact method name will depend on class name.
+CODE::
+g= GFXPch2();
+g.pch2Mix= 0.5;
+::
+## ...Name || Get or set effect parameters. Exact method names are defined in the CODE::*specs:: class method.
+CODE::
+g= GFXPch2();
+g.pch2Ratio= 2.4;
+::
 ::
 
 
@@ -96,8 +109,9 @@ LIST::
 ## Write a class that is a subclass of LINK::Classes/GFX_Module::.
 ## Add two class methods called CODE::*ar:: and CODE::*specs::.
 ## For CODE::*ar:: the first argument must be called CODE::in::. This argument will be the incoming audio and should deal with any number of channels.
-## Avoid the reserved arguments CODE::mix::, CODE::pause:: and CODE::bus::. CODE::*ar:: argument order will determine parameter sorting in the GUI.
-## The CODE::*specs:: class method should return an LINK::Classes/Event:: with parameter names as keys and specs as values. There is a little bit of magic here as the key names should follow the naming convention prefixParameter (see example below).
+## Additional CODE::*ar:: arguments should not use the reserved names CODE::mix::, CODE::pause::, CODE::lags:: and CODE::bus::.
+## CODE::*ar:: argument order will determine parameter sorting in the GUI.
+## The CODE::*specs:: class method should return an LINK::Classes/Event:: with parameter names as keys and specs as values. There is a little bit of EMPHASIS::magic:: here as the key names should follow the naming convention prefixParameter.
 ::
 
 Simple module example class...

@@ -30,7 +30,7 @@ r= GFX_Rack([
 ::
 
 ARGUMENT:: target
-A LINK::Classes/Server:: or a LINK::Classes/Group::. If not given CODE::Server.default:: will be used (and automatically booted if not already running).
+A LINK::Classes/Server:: or a LINK::Classes/Group::. If not given CODE::Server.default:: will be used.
 
 ARGUMENT:: bus
 Which audio bus to use as input and output for the rack. See LINK::#-outbus:: for routing the output elsewhere. Note that several consecutive busses might be used - depends on numChannels argument.
@@ -75,26 +75,6 @@ METHOD:: vol
 
 SUBSECTION:: Convenience methods
 
-METHOD:: code
-Code for reproducing the current rack and its modules.
-NOTE::
-target, lags and action are missing.
-::
-
-RETURNS:: a LINK::Classes/String::
-
-METHOD:: gui
-Create a LINK::Classes/GFX_RackGUI::.
-
-ARGUMENT:: position
-A LINK::Classes/Point::
-
-ARGUMENT:: version
-An LINK::Classes/Integer:: defining style.
-
-RETURNS:: a LINK::Classes/GFX_RackGUI::
-
-
 EXAMPLES::
 
 SUBSECTION:: Basics
@@ -106,6 +86,7 @@ a= {SinOsc.ar([400, 404], 0, 0.1)}.play;  //test sound
 r= GFX_Rack();
 r.efxs;  //default modules
 r.freqMix= 0.5;
+r.values;
 
 g= r.gui;  //optional gui
 ::

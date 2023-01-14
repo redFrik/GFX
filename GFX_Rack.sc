@@ -4,7 +4,7 @@ GFX_Rack : AbstractGFX {
 
 	var <efxs;  //Array of GFX_Module instances
 	var <group;  //internal Group
-	var <outbus;  //Integer. will initially be set to same as bus argument
+	var <outbus;  //Integer. Will initially be set to same as bus argument
 	var feedback;  //internal audio Bus
 
 	*new {|efxs, target, bus= 0, lags= 0.1, numChannels= 2, action|
@@ -47,6 +47,7 @@ GFX_Rack : AbstractGFX {
 			});
 			x
 		};
+
 		if(reorder, {
 			target.server.makeBundle(target.server.latency?0.05*2, {
 				efxs.do{|x, i|
@@ -59,35 +60,31 @@ GFX_Rack : AbstractGFX {
 			});
 		});
 
-		//--hijack all modules cvs, specs and lookup
+		//--hijack all modules cvs and lookup
 		efxs.do{|x|
-			x.specs.do{|assoc|
+			x.cvs.keysValuesDo{|k, cv|
 				var keyStr, suffix;
-				var key= assoc.key;
-				var spec= assoc.value;
-				var ref= x.cvs[key];
 
 				//--add suffix for duplicate efx modules
-				if(cvs[key].notNil, {
-					keyStr= key.asString;
+				if(cvs[k].notNil, {
+					keyStr= k.asString;
 					suffix= 0;
 					cvs.keysDo{|kk|
 						if(kk.asString.contains(keyStr), {
 							suffix= suffix+1;
 						});
 					};
-					key= (keyStr++$_++suffix).asSymbol;
+					k= (keyStr++$_++suffix).asSymbol;
 				});
 
-				specs= specs++(key -> spec);
-				cvs.put(key, ref);
-				lookup.put(key, x.lookup[assoc.key]);
-				this.prAddMethod(key, ref, spec);
+				cvs.put(k, cv);
+				lookup.put(k, x.lookup[k]);
+				this.prAddMethod(k, cv);
 			};
 		};
 
 		//--generate synthdef
-		def= this.prBuildDef;
+		def= this.prBuildDef(lags.asArray);
 
 		//--start synth
 		synth= Synth.basicNew(def.name, target.server);
@@ -105,7 +102,7 @@ GFX_Rack : AbstractGFX {
 
 	bus_ {|val|
 		super.bus_(val);
-		efxs.do{|efx| efx.bus_(val)};
+		efxs.do{|x| x.bus_(val)};
 	}
 
 	free {
@@ -117,7 +114,7 @@ GFX_Rack : AbstractGFX {
 	}
 
 	lags_ {|val|
-		efxs.do{|efx| efx.lags_(val)};
+		efxs.do{|x| x.lags_(val)};
 	}
 
 	outbus_ {|val|
@@ -125,7 +122,7 @@ GFX_Rack : AbstractGFX {
 	}
 
 	pause_ {|bool|
-		efxs.do{|efx| efx.pause_(bool)};
+		efxs.do{|x| x.pause_(bool)};
 	}
 
 	vol_ {|val|
@@ -134,14 +131,15 @@ GFX_Rack : AbstractGFX {
 
 	//--convenience
 
-	code {  //does not include target, lags, action
+	code {|verbose= false|
+		//does not include target, lags, action
 		var str= "GFX_Rack([";
-		efxs.do{|efx| str= str++"\n\t%,".format(efx.code)};
+		efxs.do{|x| str= str++"\n\t%,".format(x.code(verbose))};
 		str= str++"\n]";
-		if(outbus!=0, {
+		if(verbose or:{outbus!=0}, {  //TODO this should be bus and then handle outbus separately
 			str= str++", bus: %".format(outbus);
 		});
-		if(numChannels!=2, {
+		if(verbose or:{numChannels!=2}, {
 			str= str++", numChannels: %".format(numChannels);
 		});
 		str= str++");";
@@ -154,7 +152,7 @@ GFX_Rack : AbstractGFX {
 
 	//--private
 
-	prBuildDef {
+	prBuildDef {|lags|
 		^SynthDef((this.class.asString++"_Out_"++numChannels).asSymbol, {|bus|
 			var out= \outbus.kr(outbus, spec: \audiobus.asSpec);
 			var in= In.ar(bus, numChannels);

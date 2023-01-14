@@ -1,7 +1,7 @@
 TITLE:: GFX_Overview
 SUMMARY:: GFX system overview
 CATEGORIES:: Green
-RELATED:: Classes/GFX_Module, Classes/GFX_Rack
+RELATED:: Classes/GFX_Module, Classes/GFX_Rack, Classes/CV, Overviews/GUICVOverview
 
 DESCRIPTION::
 
@@ -9,27 +9,76 @@ Green effects module system with optional GUI. Modules automatically adapt to an
 
 Based on the older redModule in the redSys quark ( https://github.com/redFrik/redSys )
 
-Provides SynthDef+Synth construction, pseudo UGen support, code<->GUI linkage and automatic GUI generation with minimal code (see Modules folder - basically just an CODE::*ar:: method and some specs - see LINK::Classes/GFX_Module#Writing custom modules::).
+Provides SynthDef+Synth construction, pseudo UGen support, code<->GUI linkage and automatic GUI generation with minimal code (see Modules folder - basically just an CODE::*ar:: method and some specs - more details: LINK::Classes/GFX_Module#Writing custom modules::).
+
+
+SUBSECTION:: Basics
+
+Start a GFX pitch shifter module on the default server...
+CODE::
+s.boot;
+g= GFXPch2();
+
+//and also play some test sound to hear the effect
+a= {SinOsc.ar([400, 404], 0, 0.2)}.play;
+::
+
+A parameter can be changed in several ways:
+CODE::
+g.cvs[\pch2Mix].value= 0.4
+
+g.set(\pch2Mix, 0.6)
+
+g.pch2Mix= 0.8
+::
+
+And this for modules as well as for a rack. So if CODE::g:: instead is a LINK::Classes/GFX_Rack:: instance, the commands above will lookup the pch2 module and set its mix value. (If there are several modules of the same type in the rack postfixes will be used.)
+
+Often it's easiest to access and changes parameters using the generated methods method (the 3rd example above). See LINK::Classes/GFX_Module#Generated methods::.
+
+Available parameters and current values can be listed like this...
+
+CODE::
+g.values;
+::
+
+and parameters can be set like this...
+
+CODE::
+g.pch2Ratio= 2.0.rrand(3);
+::
+
+GUI is optional...
+CODE::
+g.gui;
+::
+
+and any changes in the GUI is reflected in code and vice versa.
+
+CODE::
+g.pch2Ratio= 1.5;
+g.pch2Mix= 0;
+::
+
+For the effects rack, normally one would select a few modules and put them in a rack...
+CODE::
+r= GFX_Rack([GFXFreq, g, GFXTanh, GFXTank]);
+r.values;
+r.pch2Mix= 0.5;
+r.gui;
+::
 
 
 SUBSECTION:: Class hierarchy
-
-Normally one would select a few modules and put them in a rack...
-CODE::
-GFX_Rack([GFXFreq, GFXPch2, GFXTank]);
-::
-and not use the LINK::Classes/AbstractGFX:: and LINK::Classes/GFX_Module:: classes.
-
 
 STRONG::Available GFX classes:::
 
 CLASSTREE:: AbstractGFX
 
+
 STRONG:: Supporting GUI classes:::
 
 CLASSTREE:: AbstractGFXGUI
-
-and for these GUI classes just call CODE::.gui:: on the rack or on some effect module directly.
 
 
 SUBSECTION:: Optional GUI
@@ -60,7 +109,6 @@ g.pch2Ratio;
 
 g.values;
 g.cvs;
-g.specs;
 g.numChannels;
 
 //--optional GUI
@@ -75,6 +123,7 @@ a.free;
 SUBSECTION:: as UGen
 
 CODE::
+s.meter;
 a= {GFXPch2.ar(SinOsc.ar([400, 404], 0, 0.1), MouseX.kr(-4, 4))}.play;
 a.free;
 
@@ -99,6 +148,9 @@ r.gui(version:1);
 r.free;
 
 
-GFX_Rack(GFX_Module.subclasses).gui;
+//a rack with all available effect modules
+Server.default.options.memSize= 2**19;
+s.reboot;
+GFX_Rack(GFX_Module.allSubclasses).gui;  //scroll down to see all
 a.free;
 ::
