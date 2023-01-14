@@ -81,7 +81,7 @@ GFX_Module : AbstractGFX {
 			}, {
 				if(cvs[k].notNil, {
 					if(k==\pause, {
-						cvs[k].spec.default= v.binaryValue;  //update spec default
+						cvs[k].spec.default= v.asInteger;  //update spec default
 					}, {
 						v= cvs[k].spec.constrain(v);
 						cvs[k].spec.default= v;  //update spec default
