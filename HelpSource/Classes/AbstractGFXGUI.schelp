@@ -1,6 +1,6 @@
 class:: AbstractGFXGUI
 summary:: abstract class for effect modules and effects rack GUI
-categories:: Green
+categories:: Green>GFX
 related:: Classes/AbstractGFX, Classes/AbstractGUICV
 
 

@@ -1,6 +1,6 @@
 class:: GFX_Module
 summary:: class for effects
-categories:: Green
+categories:: Green>GFX
 related:: Classes/GFX_ModuleGUI, Classes/GFX_Rack, Classes/GFX_RackGUI
 
 
