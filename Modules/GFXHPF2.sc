@@ -8,7 +8,7 @@ GFXHPF2 : GFX_Module {
 
 	*specs {
 		^(
-			hpf2Freq: \freq.asSpec,
+			hpf2Freq: ControlSpec(20, 20000, 'exp', units: " Hz"),
 			hpf2Gain: ControlSpec(-inf, 12, 'db', units: " dB")
 		)
 	}
