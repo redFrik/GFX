@@ -1,7 +1,7 @@
 //related: GFX_Rack, GFX_ModuleGUI, RedEffectsRackGUI
 
 GFX_RackGUI : AbstractGFXGUI {
-	classvar >numModulesBeforeScroll= 8;
+	classvar <>numModulesBeforeScroll= 8;
 
 	prInit {|parent, bounds, version, skin|
 		var hl, header, canvas;
@@ -35,7 +35,7 @@ GFX_RackGUI : AbstractGFXGUI {
 		hl.add(GUICV.staticText.string_("vol:"));
 		hl.add(GUICV.numberBox.action_({|v| efx.vol_(v.value)}));
 		hl.add(GUICV.staticText.string_("lags:"));
-		hl.add(GUICV.numberBox.action_({|v| efx.lags_(v.value)}).clipLo_(0));
+		hl.add(GUICV.numberBox.action_({|v| efx.lags_(v.value)}).clipLo_(0).value_(efx.lags));
 		hl.add(nil);
 		hl.add(
 			macroMenu= GUICV.popUpMenu
