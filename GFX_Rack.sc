@@ -5,6 +5,7 @@ GFX_Rack : AbstractGFX {
 	var <efxs;  //Array of GFX_Module instances
 	var <group;  //internal Group
 	var <outbus;  //Integer. Will initially be set to same as bus argument
+	var lag;
 	var feedback;  //internal audio Bus
 
 	*new {|efxs, target, bus= 0, lags= 0.1, numChannels= 2, action|
@@ -29,6 +30,7 @@ GFX_Rack : AbstractGFX {
 		});
 
 		outbus= bus;
+		lag= lags;
 		feedback= Bus.audio(target.server, numChannels);
 		group= Group.tail(target);
 
@@ -113,8 +115,10 @@ GFX_Rack : AbstractGFX {
 		feedback= nil;
 	}
 
+	lags {^lag}
 	lags_ {|val|
 		efxs.do{|x| x.lags_(val)};
+		lag= val;
 	}
 
 	outbus_ {|val|
