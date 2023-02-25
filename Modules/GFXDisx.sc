@@ -2,20 +2,21 @@
 
 GFXDisx : GFX_Module {
 
-	*ar {|in, thresh= -6, gain= 0|
-		var a= in.abs;
-		var t= thresh.dbamp;
-		^Select.ar(a>t, [in, 2-(1/(a/t))*t*in.sign])*gain.dbamp
+	*ar {|in, thresh= 0.5, gain= 0|
+		^Select.ar(in.abs>thresh, [
+			in,
+			2*in.sign-(1/(in/thresh))*thresh
+		])*gain.dbamp
 	}
 
 	*specs {
 		^(
-			disxThresh: ControlSpec(-inf, 12, 'db', units: " dB"),
+			disxThresh: ControlSpec(0, 1),
 			disxGain: ControlSpec(-inf, 12, 'db', units: " dB")
 		)
 	}
 }
 
 /*
-{GFXDisx.ar(Line.ar(-1, 1, 0.01), -6)}.plotAudio
+{GFXDisx.ar(Line.ar(-1, 1, 0.01))}.plotAudio
 */
