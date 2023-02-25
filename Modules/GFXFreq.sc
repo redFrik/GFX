@@ -8,7 +8,7 @@ GFXFreq : GFX_Module {
 
 	*specs {
 		^(
-			freqShift: ControlSpec(-1000, 1000)
+			freqShift: ControlSpec(-1000, 1000, units: " Hz")
 		)
 	}
 }

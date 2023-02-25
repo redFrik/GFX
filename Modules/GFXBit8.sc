@@ -12,7 +12,7 @@ GFXBit8 : GFX_Module {
 		^(
 			bit8Rate: ControlSpec(0, 1),
 			bit8Bits: ControlSpec(0, 12),
-			bit8Freq: ControlSpec(20, 20000, 'exp')
+			bit8Freq: ControlSpec(20, 20000, 'exp', units: " Hz")
 		)
 	}
 }

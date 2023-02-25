@@ -12,7 +12,7 @@ GFXFall : GFX_Module {
 
 	*specs {
 		^(
-			fallRate: ControlSpec(-10, 10)
+			fallRate: ControlSpec(-10, 10, units: " Hz")
 		)
 	}
 }

@@ -12,7 +12,7 @@ GFXRise : GFX_Module {
 
 	*specs {
 		^(
-			riseRate: ControlSpec(-10, 10)
+			riseRate: ControlSpec(-10, 10, units: " Hz")
 		)
 	}
 }

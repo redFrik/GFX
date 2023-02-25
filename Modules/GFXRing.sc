@@ -9,7 +9,7 @@ GFXRing : GFX_Module {
 
 	*specs {
 		^(
-			ringFreq: ControlSpec(20, 20000, 'exp'),
+			ringFreq: ControlSpec(20, 20000, 'exp', units: " Hz"),
 			ringMul: ControlSpec(0, 10),
 			ringDet: ControlSpec(-12, 12)
 		)

@@ -8,8 +8,8 @@ GFXFrez : GFX_Module {
 
 	*specs {
 		^(
-			frezShift: ControlSpec(-10, 10),
-			frezShift2: ControlSpec(-10, 10)
+			frezShift: ControlSpec(-10, 10, units: " Hz"),
+			frezShift2: ControlSpec(-10, 10, units: " Hz")
 		)
 	}
 }

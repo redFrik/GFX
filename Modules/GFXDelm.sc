@@ -10,8 +10,8 @@ GFXDelm : GFX_Module {
 
 	*specs {
 		^(
-			delmRate: ControlSpec(0.001, 100, 'exp'),
-			delmDel: ControlSpec(0, maxDel)
+			delmRate: ControlSpec(0.001, 100, 'exp', units: " Hz"),
+			delmDel: ControlSpec(0, maxDel, units: " secs")
 		)
 	}
 }
