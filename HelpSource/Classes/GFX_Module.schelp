@@ -136,7 +136,7 @@ See the classes in the folder Modules for more examples.
 A properly written class can be used like any other module - including being added to a LINK::Classes/GFX_Rack::, as a LINK::Classes/SynthDef:: variant (with optional GUI) or as a pseudo LINK::Classes/UGen:: variant...
 
 CODE::
-GFXFreq().gui;  //SynthDef variant with gui
+GFXFreq().gui;  //SynthDef variant with GUI
 
 {GFXFreq.ar(SinOsc.ar)}.play;  //pseudo UGen variant
 ::

@@ -83,7 +83,7 @@ CLASSTREE:: AbstractGFXGUI
 
 SUBSECTION:: Optional GUI
 
-There are two versions. The standard one with knobs (v0) and a more compact one (v1) with silders and numberboxes.
+There are two versions. The standard one with knobs (v0) and a more compact one (v1) with sliders and number boxes.
 
 IMAGE::../Images/GFX_RackGUI_v0.png::
 IMAGE::../Images/GFX_RackGUI_v1.png::
@@ -142,7 +142,7 @@ r.tanhMix= 0.25;
 r.freqMix= 1;
 r.freqShift= 10;
 
-//--optional gui
+//--optional GUI
 r.gui;
 r.gui(version:1);
 r.free;

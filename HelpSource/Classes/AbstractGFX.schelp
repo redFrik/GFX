@@ -37,7 +37,7 @@ g.cvs;  //-> ( 'pause': CVBoolean(false), 'pch2Ratio': CV(4), 'pch2Mix': CV(0) )
 ::
 
 METHOD:: lookup
-A dictionary with parameter keys and CODE::*ar:: class method argument names as values. CODE::\pause:: is exluded.
+A dictionary with parameter keys and CODE::*ar:: class method argument names as values. CODE::\pause:: is excluded.
 
 CODE::
 g.lookup;  //-> IdentityDictionary[ (pch2Ratio -> ratio), (pch2Mix -> mix) ]
@@ -51,7 +51,7 @@ METHOD:: def
 The generated LINK::Classes/SynthDef::. The def's name will be the same as the name of the class suffixed with an underscore + number of channels.
 
 METHOD:: synth
-Access the internal LINK::Classes/Synth::. Seldom neded.
+Access the internal LINK::Classes/Synth::. Seldom needed.
 
 METHOD:: numChannels
 Set when created. By default this is 2 (stereo).

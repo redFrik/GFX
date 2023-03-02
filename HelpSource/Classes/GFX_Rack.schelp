@@ -88,5 +88,5 @@ r.efxs;  //default modules
 r.freqMix= 0.5;
 r.values;
 
-g= r.gui;  //optional gui
+g= r.gui;  //optional GUI
 ::
