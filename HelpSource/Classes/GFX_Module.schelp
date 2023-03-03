@@ -141,4 +141,4 @@ GFXFreq().gui;  //SynthDef variant with GUI
 {GFXFreq.ar(SinOsc.ar)}.play;  //pseudo UGen variant
 ::
 
-A special feature is that when used in a rack, a module will be sent the parameter 'CODE::feedback::'. This is the index of an internal audio bus that is tapped from the rack output pre volume fader. See the GFXAaaa module for an example.
+A special feature is that when used in a rack, a module will be sent the parameter 'CODE::feedback::'. This is the index of an internal audio bus that is tapped from the rack output pre volume fader. See the GFXFeed module for an example.

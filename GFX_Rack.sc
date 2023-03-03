@@ -160,7 +160,6 @@ GFX_Rack : AbstractGFX {
 		^SynthDef((this.class.asString++"_Out_"++numChannels).asSymbol, {|bus|
 			var out= \outbus.kr(outbus, spec: \audiobus.asSpec);
 			var in= In.ar(bus, numChannels);
-			in= Sanitize.ar(in);
 			in= LeakDC.ar(in);
 			Out.ar(feedback, in);
 			in= in*\vol.kr(0, 0.05, spec: ControlSpec(-inf, 12, 'db', units: " dB")).dbamp;
