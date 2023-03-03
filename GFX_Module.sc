@@ -196,7 +196,7 @@ GFX_Module : AbstractGFX {
 
 	prBuildDef {|lags|
 		^SynthDef((this.class.asString++$_++numChannels).asSymbol, {|bus|
-			var l= NamedControl.kr(\lags, {|i| lags.wrapAt(i)}.dup(order.size));
+			var l= NamedControl.kr(\lags, {|i| lags.wrapAt(i)}.dup(order.size)).asArray;
 			var args= Array.newClear(order.size);
 			cvs.keysValuesDo{|k, cv, i|
 				var index, name, c;
