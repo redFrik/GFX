@@ -40,14 +40,11 @@ GFX_RackGUI : AbstractGFXGUI {
 		hl.add(
 			macroMenu= GUICV.popUpMenu
 			.action_({|v| macros[v.value].value.value})
+			.allowsReselection_(true)
 			.canFocus_(true)
+			.focus(true)  //initially give popup focus as it is harmless
 			.items_(macros.collect{|assoc| assoc.key})
-		);
-		hl.add(
-			GUICV.button
-			.action_({macroMenu.doAction})
-			.focus(true)  //initially give button focus as it is harmless
-			.states_([["<"]])
+			.keyDownAction_({|v, chr| if(chr==Char.ret, {v.doAction})})
 		);
 		header.children.do{|v| v.maxSize_(Size(skin.knobWidth, skin.buttonHeight))};
 		macroMenu.maxWidth_(skin.knobWidth*2);
