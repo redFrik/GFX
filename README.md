@@ -32,7 +32,8 @@ c.close; b.free; a.free; r.free; t.close;
 
 ## Dependencies
 
-* **GUICV** - quark https://github.com/redFrik/GUICV
+* **GUICV** - quark https://github.com/redFrik/GUICV  
+Automatically installed when running the `Quarks.install` here below.
 
 ## Installation
 

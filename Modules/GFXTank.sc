@@ -7,7 +7,7 @@ GFXTank : GFX_Module {
 		4.do{
 			in= AllpassN.ar(in, 0.02, {Rand(0.005, 0.02)}.dup(in.numChannels), dec, damp);
 		};
-		z= LocalIn.ar(in.numChannels).asArray*fb;
+		z= LocalIn.ar(in.numChannels).asArray*fb;  //TODO BAD idea - not good to have fb in psudo ugen
 		z= OnePole.ar(z, 0.5);
 
 		//z= Rotate2.ar(z[0], z[1], angle);
