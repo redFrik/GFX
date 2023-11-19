@@ -3,12 +3,14 @@
 
 GFXAaaa : GFX_Module {
 
-	*ar {|in|
+	*ar {|in, gain= 0|
 		CheckBadValues.ar(in, 9999);
-		^Sanitize.ar(in)
+		^Sanitize.ar(in)*gain.dbamp
 	}
 
 	*specs {
-		^()
+		^(
+			aaaaGain: ControlSpec(-inf, 12, 'db', units: " dB")
+		)
 	}
 }
