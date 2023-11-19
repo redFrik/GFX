@@ -30,6 +30,14 @@ subclassResponsibility
 METHOD:: allSubclasses
 A sorted LINK::Classes/Array:: of all subclasses.
 
+METHOD:: crossFade
+A mapping LINK::Classes/Function:: used for all dry-wet cross fades. The default is linear. Set this before creating modules.
+
+CODE::
+GFX_Module.crossFade= {|x| sin(x*0.5pi)};  //equal-power
+GFX_Module.crossFade= {|x| x};  //linear (default)
+::
+
 
 INSTANCEMETHODS::
 

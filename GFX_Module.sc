@@ -2,8 +2,14 @@
 
 GFX_Module : AbstractGFX {
 
+	classvar <>crossFade;
+
 	var <order;  //Array with symbols
 	var <prefix;  //String
+
+	*initClass {
+		crossFade= {|x| x};
+	}
 
 	*new {|target, bus= 0, lags= 0.1, numChannels= 2, addAction= \addToTail, args|
 		var trg= target.asTarget;
@@ -207,7 +213,7 @@ GFX_Module : AbstractGFX {
 					args.put(index, c.max(-3.4e38));
 				});
 			};
-			XOut.ar(bus, args[0], this.class.ar(In.ar(bus, numChannels), *args[1..]));
+			XOut.ar(bus, crossFade.value(args[0]), this.class.ar(In.ar(bus, numChannels), *args[1..]));
 		})
 	}
 }
