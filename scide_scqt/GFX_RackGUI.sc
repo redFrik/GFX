@@ -26,7 +26,8 @@ GFX_RackGUI : AbstractGFXGUI {
 			"save preset" -> {Dialog.savePanel{|x| efx.values.writeArchive(x)}},
 			"load preset" -> {Dialog.openPanel{|x|
 				Object.readArchive(x).pairsDo{|k, v| efx.cvs[k].value_(v).changed(\value)}
-			}}
+			}},
+			"reset" -> {efx.reset}
 		];
 
 		//--header

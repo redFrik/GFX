@@ -41,17 +41,17 @@ GFX_Rack : AbstractGFX {
 					"%: module % wrong numChannels".format(this.class.name, x.class.name).warn;
 				});
 				target.server.makeBundle(target.server.latency?0.05*2, {
-					x.bus= bus;
+					x.bus= outbus;
 					x.lags= lags;
 				});
 			}, {
-				x= x.new(group, bus, lags, numChannels, \addToTail);
+				x= x.new(group, outbus, lags, numChannels, \addToTail);
 			});
 			x
 		};
 
 		if(reorder, {
-			target.server.makeBundle(target.server.latency?0.05*2, {
+			target.server.sync.makeBundle(target.server.latency, {
 				efxs.do{|x, i|
 					if(i==0, {
 						x.synth.moveToHead(group);
@@ -127,6 +127,34 @@ GFX_Rack : AbstractGFX {
 
 	pause_ {|bool|
 		efxs.do{|x| x.pause_(bool)};
+	}
+
+	reset {
+		fork{
+			efxs.do{|x|
+				var synthArgs= ();
+				var pause= false;
+				x.free;
+				target.server.sync;
+				x.cvs.keysValuesDo{|k, cv|
+					if(k==\pause, {
+						pause= cv.value;
+					}, {
+						synthArgs.put(k, cv.value);
+					});
+					cv.ref.addDependant(cv);
+				};
+				synthArgs= synthArgs.asKeyValuePairs;
+				x.synth= x.class.new(group, outbus, lag, numChannels, \addToTail, synthArgs).synth;
+				if(pause, {
+					target.server.sync;
+					x.synth.run(false);
+				});
+			};
+			target.server.sync;
+			synth.moveToTail(group);
+			"%: recreated internal synth nodes of all effect modules".format(this.class.name).postln;
+		}
 	}
 
 	vol_ {|val|

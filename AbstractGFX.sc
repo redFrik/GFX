@@ -7,7 +7,7 @@ AbstractGFX {
 	var <cvs;  //Event (key: CV)
 	var <lookup;  //IdentityDictionary for looking up *ar argument names
 	var <def;
-	var <synth;
+	var <>synth;
 	var <numChannels;
 	var <target;
 

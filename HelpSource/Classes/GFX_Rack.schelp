@@ -70,6 +70,13 @@ Which audio bus to use as output for the rack. By default this will be the same 
 METHOD:: pause
 Call pause on all effect modules.
 
+METHOD:: reset
+Free and recreate the internal synth nodes of all effect modules.
+
+WARNING::
+Carefull with this method. Just for resetting everything when for example a filter has blown.
+::
+
 METHOD:: vol
 
 
@@ -89,4 +96,22 @@ r.freqMix= 0.5;
 r.values;
 
 g= r.gui;  //optional GUI
+
+(
+g.close;
+r.free;
+a.free;
+)
+
+
+//--some random effects
+a= {SinOsc.ar([400, 404], 0, 0.1)}.play;  //test sound
+r= GFX_Rack(GFX_Module.subclasses.scramble.copyRange(0, 9));
+g= r.gui;
+
+(
+g.close;
+r.free;
+a.free;
+)
 ::
