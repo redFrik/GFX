@@ -34,7 +34,11 @@ METHOD:: crossFade
 A mapping LINK::Classes/Function:: used for all dry-wet cross fades. The default is linear. Set this before creating modules.
 
 CODE::
+//some variants to try...
 GFX_Module.crossFade= {|x| sin(x*0.5pi)};  //equal-power
+GFX_Module.crossFade= {|x| sin(x**1.25*0.5pi)};
+GFX_Module.crossFade= {|x| sin(x**1.5*0.5pi)};
+GFX_Module.crossFade= {|x| sin(x**2*0.5pi)};  //s-curve
 GFX_Module.crossFade= {|x| x};  //linear (default)
 ::
 
