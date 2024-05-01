@@ -65,7 +65,7 @@ GFX_Rack : AbstractGFX {
 		//--hijack all modules cvs and lookup
 		efxs.do{|x|
 			x.cvs.keysValuesDo{|k, cv|
-				var keyStr, suffix;
+				var keyStr, suffix, nk= k;
 
 				//--add suffix for duplicate efx modules
 				if(cvs[k].notNil, {
@@ -76,12 +76,12 @@ GFX_Rack : AbstractGFX {
 							suffix= suffix+1;
 						});
 					};
-					k= (keyStr++$_++suffix).asSymbol;
+					nk= (keyStr++$_++suffix).asSymbol;
 				});
 
-				cvs.put(k, cv);
-				lookup.put(k, x.lookup[k]);
-				this.prAddMethod(k, cv);
+				cvs.put(nk, cv);
+				lookup.put(nk, x.lookup[k]);
+				this.prAddMethod(nk, cv);
 			};
 		};
 
