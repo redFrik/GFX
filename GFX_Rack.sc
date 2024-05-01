@@ -129,13 +129,14 @@ GFX_Rack : AbstractGFX {
 		efxs.do{|x| x.pause_(bool)};
 	}
 
-	reset {
+	reset {|wait= 0.01|
 		fork{
 			efxs.do{|x|
 				var synthArgs= ();
 				var pause= false;
 				x.free;
 				target.server.sync;
+				wait.wait;
 				x.cvs.keysValuesDo{|k, cv|
 					if(k==\pause, {
 						pause= cv.value;
@@ -150,6 +151,7 @@ GFX_Rack : AbstractGFX {
 					target.server.sync;
 					x.synth.run(false);
 				});
+				wait.wait;
 			};
 			target.server.sync;
 			synth.moveToTail(group);
