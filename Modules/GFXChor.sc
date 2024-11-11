@@ -6,7 +6,7 @@ GFXChor : GFX_Module {
 
 	*ar {|in, rate= 0.05, dMin= 0.03, dMax= 0.04|
 		var arr= {|i|
-			var lfos= LFNoise2.ar(2**(0..numLFOs-1)*rate, 1/(1..numLFOs)).range(dMin, dMax);
+			var lfos= LFNoise2.ar(2**(0..numLFOs-1)*rate, 1/(1..numLFOs)).linlin(-1, 1, dMin, dMax);
 			DelayC.ar(in.asArray[i], maxDel, lfos, 1/numLFOs)
 		}.dup(in.numChannels).flat;
 		^{|i| {|j| arr.wrapAt(j*in.numChannels+i)}.dup(numLFOs).sum}.dup(in.numChannels)
