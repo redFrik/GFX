@@ -2,16 +2,17 @@
 
 GFXRing : GFX_Module {
 
-	*ar {|in, freq= 400, mul= 1, det= 0|
+	*ar {|in, freq= 400, mul= 1, det= 0, add= 0|
 		var detune= ((0..in.numChannels-1)*det).midiratio;
-		^in*SinOsc.ar(freq*detune, 0, mul)
+		^in*SinOsc.ar(freq*detune, 0, mul, add)
 	}
 
 	*specs {
 		^(
 			ringFreq: ControlSpec(20, 20000, 'exp', units: " Hz"),
 			ringMul: ControlSpec(0, 10),
-			ringDet: ControlSpec(-12, 12)
+			ringDet: ControlSpec(-12, 12),
+			ringAdd: ControlSpec(0, 10)
 		)
 	}
 }
