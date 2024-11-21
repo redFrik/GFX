@@ -6,7 +6,7 @@ GFXKaos : GFX_Module {
 		var a= LFNoise2.kr(1!in.numChannels, 0.67);
 		var d= PitchShift.ar(in, 1, LFNoise2.kr(0.01!in.numChannels)*diff+1, diff/2, 0.5, a);
 		var o= CompanderD.ar(d, thresh, 0.1, 1, 0.01, 0.01, amp).tanh;
-		^LPF.ar(o, LFNoise2.kr(0.01!in.numChannels).expange(loFreq, hiFreq), a).tanh
+		^LPF.ar(o, LFNoise2.kr(0.01!in.numChannels).exprange(loFreq, hiFreq), a).tanh
 	}
 
 	*specs {
