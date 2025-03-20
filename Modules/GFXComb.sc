@@ -9,7 +9,7 @@ GFXComb : GFX_Module {
 
 	*specs {
 		^(
-			combDly: ControlSpec(0.0001, maxDel, 'exp', units: " secs"),
+			combDly: ControlSpec(0, maxDel, 'exp', units: " secs"),
 			combDec: ControlSpec(0, 100)
 		)
 	}
